@@ -1,0 +1,11 @@
+{
+  "name": "@dsaco/eslint-config",
+  "version": "1.0.3",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "ISC",
+  "repository": "https://github.com/dsaco/packages/tree/master/packages/eslint-config",
+  "author": "dsaco",
+  "main": "index.js"
+}
