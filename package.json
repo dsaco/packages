@@ -11,7 +11,11 @@
     "start:cra-ts": "pnpm -C packages/cra-template-typescript/template start",
     "publish:cra-ts": "npm publish ./packages/cra-template-typescript",
 
-    "publish:eslint-config": "npm publish ./packages/eslint-config"
+    "publish:eslint-config": "npm publish ./packages/eslint-config",
+
+    "start:utils": "pnpm -C packages/utils start",
+    "build:utils": "pnpm -C packages/utils build",
+    "publish:utils": "npm publish ./packages/utils"
   },
   "devDependencies": {
     "prettier": "^2.8.8",
