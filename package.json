@@ -1,0 +1,18 @@
+{
+  "name": "ds-packages",
+  "version": "1.0.0",
+  "description": "dsaco packages",
+  "license": "ISC",
+  "author": "dsaco",
+  "scripts": {
+    "start:cra": "pnpm -C packages/cra-template/template start",
+    "publish:cra": "npm publish ./packages/cra-template",
+
+    "start:cra-ts": "pnpm -C packages/cra-template-typescript/template start",
+    "publish:cra-ts": "npm publish ./packages/cra-template-typescript"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-package": "^1.3.0"
+  }
+}

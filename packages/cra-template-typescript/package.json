@@ -1,0 +1,14 @@
+{
+  "name": "@dsaco/cra-template-typescript",
+  "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "ISC",
+  "author": "dsaco",
+  "main": "template.json",
+  "files": [
+    "template",
+    "template.json"
+  ]
+}

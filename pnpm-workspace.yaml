@@ -1,0 +1,3 @@
+packages:
+  - 'packages/cra-basic/template'
+  - 'packages/cra-basic-ts/template'
