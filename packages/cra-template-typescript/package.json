@@ -1,10 +1,11 @@
 {
   "name": "@dsaco/cra-template-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
   "license": "ISC",
+  "repository": "https://github.com/dsaco/packages/tree/master/packages/cra-template-typescript",
   "author": "dsaco",
   "main": "template.json",
   "files": [
