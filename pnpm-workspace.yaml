@@ -1,4 +1,5 @@
 packages:
   - 'packages/cra-template/template'
   - 'packages/cra-template-typescript/template'
+  - 'packages/cra-template-admin/template'
   - 'packages/utils'

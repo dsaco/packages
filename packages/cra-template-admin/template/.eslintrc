@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "ignorePatterns": [
+    "**/*test.js",
+    "setupProxy.js",
+    "*.config.js"
+  ],
+  "plugins": [
+    "prettier",
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "@dsaco"
+  ],
+  "rules": {
+    "prettier/prettier": 2,
+    "react/react-in-jsx-scope": 0
+  }
+}
