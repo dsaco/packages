@@ -17,7 +17,8 @@
     }
   },
   "ignorePatterns": [
-    "setupProxy.js"
+    "setupProxy.js",
+    "*.config.js"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [

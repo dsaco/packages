@@ -18,7 +18,8 @@
   },
   "ignorePatterns": [
     "**/*test.js",
-    "setupProxy.js"
+    "setupProxy.js",
+    "*.config.js"
   ],
   "plugins": [
     "prettier",
@@ -26,7 +27,8 @@
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "@dsaco"
   ],
   "rules": {
     "prettier/prettier": 2,

@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
-    "@dsaco/eslint-config": "^1.0.2",
+    "@dsaco/eslint-config": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "craco-less": "^2.1.0-alpha.0",

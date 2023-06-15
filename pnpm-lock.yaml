@@ -13,7 +13,7 @@ importers:
   packages/cra-template-typescript/template:
     specifiers:
       '@craco/craco': ^7.1.0
-      '@dsaco/eslint-config': ^1.0.2
+      '@dsaco/eslint-config': ^1.0.3
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^13.4.0
       '@testing-library/user-event': ^13.5.0
@@ -78,6 +78,7 @@ importers:
   packages/cra-template/template:
     specifiers:
       '@craco/craco': ^7.1.0
+      '@dsaco/eslint-config': ^1.0.3
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^13.4.0
       '@testing-library/user-event': ^13.5.0
@@ -116,6 +117,7 @@ importers:
       zustand: 4.3.8_react@18.2.0
     devDependencies:
       '@craco/craco': 7.1.0_5v36ftyxy5cypvwk2zkgrmvez4
+      '@dsaco/eslint-config': 1.0.3
       craco-less: 2.1.0-alpha.0_2isd6oyk7ctdozp32wavtuliha
       eslint: 8.42.0
       eslint-plugin-prettier: 4.2.1_eveahbx3r3okkkxu7l44ces2q4

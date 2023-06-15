@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@dsaco/eslint-config": "^1.0.3",
     "craco-less": "^2.1.0-alpha.0",
     "eslint": "^8.42.0",
     "eslint-plugin-prettier": "^4.2.1",
