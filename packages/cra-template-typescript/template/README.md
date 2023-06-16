@@ -1,8 +1,4 @@
-### `npm start`
-
-启动项目
-
-#### 配置路径别名
+##### 配置路径别名
 
 ```js
 // cacro.config.js
@@ -15,47 +11,63 @@ module.exports = {
   },
 };
 ```
+
 ```json
 // tsconfig.json
 {
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   }
 }
 ```
 
-### `npm run build`
+##### 启动项目
 
-构建项目
+```
+npm start
+```
 
-### `npm run lint:script`
+##### 构建项目
 
-检测script脚本
+```
+npm run build
+```
 
-### `npm run lint:script -- --fix`
+##### 检测 script 脚本
 
-检测并修复script脚本
+```
+npm run lint:script
+```
 
-### `npm run lint:style`
+##### 检测并修复 script 脚本
 
-检测样式
+```
+npm run fix:script
+```
 
-### `npm run lint:style -- --fix`
+##### 检测样式
 
-检测并修复样式
+```
+npm run lint:style
+```
 
-### `npm run fix`
+##### 检测并修复样式
 
-检测修复脚本及样式
+```
+npm run fix:style
+```
 
-### `npm run analyze`
+##### 检测修复脚本及样式
 
-分析项目构建结果
+```
+npm run fix
+```
 
+##### 分析项目构建结果
 
-
+```
+npm run analyze
+```

@@ -9,7 +9,9 @@
     "eject": "react-scripts eject",
     "lint:script": "eslint --ext .tsx --ext .ts src/",
     "lint:style": "stylelint src/**/*.{css,less,scss}",
-    "fix": "npm run lint:script -- --fix & npm run lint:style -- --fix",
+    "fix:script": "npm run lint:script -- --fix",
+    "fix:style": "npm run lint:style -- --fix",
+    "fix": "npm run fix:script & npm run fix:style",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
   },
   "dependencies": {
