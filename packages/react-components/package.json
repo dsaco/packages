@@ -8,16 +8,19 @@
   "repository": "https://github.com/dsaco/packages/tree/master/packages/react-components",
   "author": "dsaco",
   "scripts": {
-    "start": "craco start",
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "build": "craco build",
-    "test": "craco test",
     "eject": "react-scripts eject",
-    "lint:script": "eslint --ext .tsx --ext .ts src/",
-    "lint:style": "stylelint src/**/*.{css,less,scss}",
+    "fix": "npm run fix:script & npm run fix:style",
     "fix:script": "npm run lint:script -- --fix",
     "fix:style": "npm run lint:style -- --fix",
-    "fix": "npm run fix:script & npm run fix:style",
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
+    "lint:script": "eslint --ext .tsx --ext .ts src/",
+    "lint:style": "stylelint src/**/*.{css,less,scss}",
+    "start": "craco start",
+    "test": "craco test"
+  },
+  "peerDependencies": {
+    "@react-spring/web": "^9.7.2"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -35,6 +38,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@dsaco/eslint-config": "^1.0.3",
+    "@react-spring/web": "^9.7.2",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "craco-less": "^2.1.0-alpha.0",
