@@ -18,7 +18,11 @@
 
     "start:utils": "pnpm -C packages/utils start",
     "build:utils": "pnpm -C packages/utils build",
-    "publish:utils": "npm publish ./packages/utils"
+    "publish:utils": "npm publish ./packages/utils",
+
+    "start:rc": "pnpm -C packages/react-components start",
+    "build:rc": "pnpm -C packages/react-components build",
+    "publish:rc": "npm publish ./packages/react-components"
   },
   "devDependencies": {
     "prettier": "^2.8.8",
