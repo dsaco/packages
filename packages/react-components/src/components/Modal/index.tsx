@@ -66,3 +66,9 @@ export const useMask: TypeUseMask = (props = {}) => {
 
   return { Mask, set, visible };
 };
+
+export const useModal = () => {
+  const { Mask, visible, set } = useMask();
+
+  return <Mask></Mask>;
+};

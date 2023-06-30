@@ -5,6 +5,12 @@ export default function Home() {
     <div>
       <header className="text-lg">Home</header>
       <Link to="/ripple">ripple</Link>
+      <br />
+      <Link to="/img">img</Link>
+      <br />
+      <Link to="/pagination">pagination</Link>
+      <br />
+      <Link to="/modal">modal</Link>
     </div>
   );
 }
