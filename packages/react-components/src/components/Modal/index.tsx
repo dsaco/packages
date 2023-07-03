@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import type { MouseEventHandler, SetStateAction, Dispatch } from 'react';
 import { createPortal } from 'react-dom';
 import { useTransition, animated } from '@react-spring/web';
@@ -43,7 +43,7 @@ export const useMask: TypeUseMask = (props = {}) => {
     }
   }, []);
 
-  const Mask: TypeMask = ({ children, maskClosable = false }) => {
+  const _Mask: TypeMask = ({ children, maskClosable = false }) => {
     const onMaskClick: MouseEventHandler<HTMLDivElement> = (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -63,12 +63,41 @@ export const useMask: TypeUseMask = (props = {}) => {
       target.current
     );
   };
+  const Mask = memo(_Mask);
 
   return { Mask, set, visible };
 };
 
-export const useModal = () => {
-  const { Mask, visible, set } = useMask();
+type TypeUseModalParam = {
+  bgColor?: string;
+  duration?: number;
+};
 
-  return <Mask></Mask>;
+type TypeUseModalReturn = {
+  Modal: React.FC<MaskProps>;
+  set: Dispatch<SetStateAction<boolean>>;
+  visible: boolean;
+};
+
+type TypeUseModal = {
+  (props?: TypeUseModalParam): TypeUseModalReturn;
+};
+
+type TypeModal = React.FC<MaskProps>;
+
+export const useModal: TypeUseModal = (props = {}) => {
+  const { bgColor, duration } = props;
+  const { Mask, visible, set } = useMask({ bgColor, duration });
+
+  const Modal: TypeModal = ({ children, maskClosable }) => {
+    return (
+      <Mask maskClosable={maskClosable}>
+        <div style={{ backgroundColor: '#fff', width: 200, height: 200 }}>
+          {children}
+        </div>
+      </Mask>
+    );
+  };
+
+  return { Modal, visible, set };
 };

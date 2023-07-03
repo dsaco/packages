@@ -15,13 +15,7 @@ type ImgProps = {
 
 const Placeholder = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="44"
-      height="44"
-      viewBox="0 0 44 44"
-      stroke="#fff"
-    >
+    <svg viewBox="0 0 44 44" stroke="#fff">
       <g fill="none" fillRule="evenodd" strokeWidth="2">
         <circle cx="22" cy="22" r="17.3535">
           <animate
@@ -102,9 +96,7 @@ const Img: React.FC<ImgProps> = ({
     img.src = src;
     img.onload = () => {
       setImgSize({ width: img.width, height: img.height });
-      setTimeout(() => {
-        // setLoaded(true);
-      }, 300);
+      setLoaded(true);
     };
   }, []);
 
@@ -160,14 +152,12 @@ const Img: React.FC<ImgProps> = ({
   };
 
   if (loaded) {
-    console.log('==');
     return (
       <>
         <img ref={imgRef} onClick={onPreview} src={src} {...restProps} />
         <Mask maskClosable>
-          {imgTransitions((style, show) => {
-            console.log(style, show);
-            return show ? (
+          {imgTransitions((style, show) =>
+            show ? (
               <animated.img
                 src={src}
                 style={{
@@ -177,8 +167,8 @@ const Img: React.FC<ImgProps> = ({
                 }}
                 alt=""
               />
-            ) : null;
-          })}
+            ) : null
+          )}
         </Mask>
       </>
     );
