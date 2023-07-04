@@ -4,6 +4,8 @@
     "css",
     "less",
     "postcss",
-    "scss"
+    "scss",
+    "typescript",
+    "typescriptreact"
   ]
 }
