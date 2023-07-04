@@ -8,6 +8,10 @@
     {
       "files": ["**/*.scss"],
       "customSyntax": "postcss-scss"
+    },
+    {
+      "files": ["**/*.{ts,tsx}"],
+      "customSyntax": "postcss-styled-syntax"
     }
   ],
   "rules": {

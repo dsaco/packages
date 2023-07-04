@@ -16,8 +16,67 @@ export default function ModalPage() {
         <h1 className="bg-white">world</h1>
       </Mask2>
       <hr />
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
+      <h2>haha</h2>
       <button onClick={() => setModalVisible(true)}>open modal</button>
       <Modal maskClosable>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
+        <h2>haha</h2>
         <h2>haha</h2>
       </Modal>
     </div>
