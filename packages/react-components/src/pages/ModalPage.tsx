@@ -6,72 +6,19 @@ export default function ModalPage() {
   const { Modal, set: setModalVisible } = useModal();
   return (
     <div className="h-screen p-5">
-      <button onClick={() => setVisible(true)}>click</button>
-      <button onClick={() => setVisible2(true)}>click</button>
+      <button onClick={() => setVisible(true)}>open mask</button>
+      <hr />
+      <button onClick={() => setVisible2(true)}>open mask2</button>
       <Mask>
-        <h1 className="bg-white">hello</h1>
-        <button onClick={() => setVisible2(true)}>click</button>
+        <h1 className="bg-white">mask count&apos;t close</h1>
+        <button onClick={() => setVisible2(true)}>open mask2</button>
       </Mask>
       <Mask2 maskClosable>
-        <h1 className="bg-white">world</h1>
+        <h1 className="bg-white">mask closeable</h1>
       </Mask2>
       <hr />
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
-      <h2>haha</h2>
       <button onClick={() => setModalVisible(true)}>open modal</button>
-      <Modal maskClosable>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
-        <h2>haha</h2>
+      <Modal title="超长超长超长超长超长超长超长超长超长超长超长超长超长超长超长超长">
         <h2>haha</h2>
         <h2>haha</h2>
         <h2>haha</h2>

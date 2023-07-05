@@ -11,6 +11,8 @@ export default function Home() {
       <Link to="/pagination">pagination</Link>
       <br />
       <Link to="/modal">modal</Link>
+      <br />
+      <Link to="/switch">switch</Link>
     </div>
   );
 }
