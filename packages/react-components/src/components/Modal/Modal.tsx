@@ -106,7 +106,7 @@ export const useModal: TypeUseModal = (props = {}) => {
               <StyledDialogHeader>
                 <span>{title}</span>
                 <StyledDialogClose onClick={onClose}>
-                  <IconClose style={{ width: 20, height: 20 }} />
+                  <IconClose style={{ fontSize: 20 }} />
                 </StyledDialogClose>
               </StyledDialogHeader>
               <StyledDialogContent>{children}</StyledDialogContent>
