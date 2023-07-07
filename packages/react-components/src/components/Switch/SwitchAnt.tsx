@@ -11,6 +11,8 @@ type SwitchAntProps = SwitchProps & {
   padding?: number;
   checkedChildren?: React.ReactNode;
   unCheckedChildren?: React.ReactNode;
+  activeColor?: string;
+  inactiveColor?: string;
 };
 type TypeStyledSwitchAntProps = {
   $checked?: boolean;
@@ -18,6 +20,8 @@ type TypeStyledSwitchAntProps = {
   $width?: number;
   $height: number;
   $padding: number;
+  $activeColor?: string;
+  $inactiveColor?: string;
 };
 
 const StyledSwitchInner = styled.div<TypeStyledSwitchAntProps>`
@@ -170,6 +174,8 @@ export const SwitchAnt: React.FC<SwitchAntProps> = ({
   padding = 2,
   checkedChildren,
   unCheckedChildren,
+  activeColor,
+  inactiveColor,
 }) => {
   const styledProps: TypeStyledSwitchAntProps = {
     $checked: checked,
