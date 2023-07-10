@@ -11,6 +11,7 @@ const ImgPage = lazy(() => import('@/pages/ImgPage'));
 const PaginationPage = lazy(() => import('@/pages/PaginationPage'));
 const ModalPage = lazy(() => import('@/pages/ModalPage'));
 const SwitchPage = lazy(() => import('@/pages/SwitchPage'));
+const ButtonPage = lazy(() => import('@/pages/ButtonPage'));
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: 'switch',
         element: <SwitchPage />,
+      },
+      {
+        path: 'button',
+        element: <ButtonPage />,
       },
       {
         path: 'dot',

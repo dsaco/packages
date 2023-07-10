@@ -13,14 +13,13 @@ export const darken = (color: string, percent: number) => {
     const darkenedGreen = Math.round((green * (100 - percent)) / 100);
     const darkenedBlue = Math.round((blue * (100 - percent)) / 100);
 
-    console.log(darkenedRed, darkenedGreen, darkenedBlue);
     const darkenedColor = (
       (darkenedRed << 16) |
       (darkenedGreen << 8) |
       darkenedBlue
     ).toString(16);
 
-    console.log(darkenedColor);
+    return `#${darkenedColor}`;
   } else {
     const { hue, saturation, lightness } = rgbToHsl(color);
     return `hsl(${hue}, ${saturation * 100}%, ${minAndMax(
@@ -135,3 +134,10 @@ const hslToRgb = (color: string) => {
 //   }
 //   return recomposeColor(color);
 // }
+
+export const colorAlpha = (color: string, alpha: number) => {
+  const red = parseInt(color.substring(1, 3), 16);
+  const green = parseInt(color.substring(3, 5), 16);
+  const blue = parseInt(color.substring(5, 7), 16);
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+};
