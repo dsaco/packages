@@ -5,6 +5,7 @@ import App from '@/pages/App';
 import DotPage from '@/pages/Dot';
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const Home = lazy(() => import('@/pages/Home'));
+const UtilPage = lazy(() => import('@/pages/UtilPage'));
 
 const RipplePage = lazy(() => import('@/pages/RipplePage'));
 const ImgPage = lazy(() => import('@/pages/ImgPage'));
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: 'ripple',
         element: <RipplePage />,
+      },
+      {
+        path: 'util',
+        element: <UtilPage />,
       },
       {
         path: 'img',

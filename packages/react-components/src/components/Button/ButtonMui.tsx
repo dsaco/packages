@@ -1,21 +1,21 @@
 import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
-import { darken, colorAlpha } from '../common/utils';
 import Ripple from '../Ripple';
 
 import type { ButtonProps } from '.';
+import { Color, TypeColor } from '../utils/color';
 
 type TypeVariant = 'text' | 'contained' | 'outlined';
 type ButtonMuiProps = ButtonProps & {
   variant?: TypeVariant;
-  theme?: 'primary' | 'secondary' | string;
+  color?: 'primary' | 'secondary' | string;
   rippleColor?: string;
 };
 
 type TypeStyledButtonMuiProps = {
   $variant: TypeVariant;
-  $color: string;
+  $color: TypeColor;
 };
 
 const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
@@ -42,22 +42,27 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
   -webkit-tap-highlight-color: transparent;
 
   ${({ $variant, $color }) => {
+    const _$color = $color.rgb;
     switch ($variant) {
       case 'outlined':
         return css`
-          color: ${$color};
+          color: ${_$color};
           background-color: transparent;
-          border: 1px solid ${colorAlpha($color, 0.5)};
+          border: 1px solid ${$color.alpha(0.5)};
+
+          &:hover {
+            background-color: ${$color.alpha(0.05)};
+          }
         `;
       case 'contained':
         return css`
           color: #fff;
-          background-color: ${$color};
+          background-color: ${_$color};
           box-shadow: 0 1px 5px 0 rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
             0 3px 1px -2px rgb(0 0 0 / 12%);
 
           &:hover {
-            background-color: ${darken($color, 10)};
+            background-color: ${$color.darken(0.1)};
             box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%),
               0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
           }
@@ -68,11 +73,16 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
           }
         `;
       case 'text':
-      default:
         return css`
-          color: ${$color};
+          color: ${_$color};
           background-color: transparent;
+
+          &:hover {
+            background-color: ${$color.alpha(0.05)};
+          }
         `;
+      default:
+        return '';
     }
   }}
 
@@ -80,46 +90,66 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
     pointer-events: none;
     cursor: default;
     box-shadow: none;
+
+    ${({ $variant }) => {
+      switch ($variant) {
+        case 'outlined':
+          return css`
+            color: rgb(0 0 0 / 26%);
+            border: 1px solid rgb(0 0 0 / 12%);
+          `;
+        case 'contained':
+          return css`
+            color: rgb(0 0 0 / 26%);
+            background-color: rgb(0 0 0 / 12%);
+          `;
+        case 'text':
+          return css`
+            color: rgb(0 0 0 / 26%);
+          `;
+        default:
+          return '';
+      }
+    }}
   }
 `;
 
 export const ButtonMui: React.FC<ButtonMuiProps> = ({
   variant = 'text',
-  theme = 'primary',
+  color = 'primary',
   rippleColor,
   children,
+  ...restProps
 }) => {
   const _rippleColor = useMemo(() => {
     if (rippleColor) {
       return rippleColor;
     }
     if (variant === 'contained') {
-      if (theme === 'primary' || theme === 'secondary') {
-        return 'rgba(255, 255, 255, 0.3)';
-      }
+      return 'rgba(255, 255, 255, 0.3)';
     } else {
-      if (theme === 'primary') {
-        return 'rgba(33, 150, 243, 0.25)';
+      if (color === 'primary') {
+        return Color('#2196f3').alpha(0.25);
       }
-      if (theme === 'secondary') {
-        return 'rgba(225, 0, 80, 0.25)';
+      if (color === 'secondary') {
+        return Color('#e10050').alpha(0.25);
       }
+      return Color(color).alpha(0.25);
     }
-    return 'rgba(0, 0, 0, 0.25)';
-  }, [theme, rippleColor]);
+  }, [color, rippleColor]);
 
   const $color = useMemo(() => {
-    if (theme === 'primary') {
-      return '#2196f3';
+    if (color === 'primary') {
+      return Color('#2196f3');
     }
-    if (theme === 'secondary') {
-      return '#e10050';
+    if (color === 'secondary') {
+      return Color('#e10050');
     }
-    return theme;
-  }, [theme]);
+    return Color(color);
+  }, [color]);
 
   return (
-    <StyledButtonMui $variant={variant} $color={$color}>
+    <StyledButtonMui $variant={variant} $color={$color} {...restProps}>
       {children}
       <Ripple color={_rippleColor} duration={250} />
     </StyledButtonMui>

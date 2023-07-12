@@ -4,25 +4,73 @@ export default function ButtonPage() {
   return (
     <div className="h-screen p-5">
       <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">variant: </span>
-        <ButtonMui variant="text">text</ButtonMui>
+        <span className="mr-4">variant: disabled</span>
+        <ButtonMui variant="text" disabled>
+          text
+        </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained">contained</ButtonMui>
+        <ButtonMui variant="contained" disabled>
+          contained
+        </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined">outlined</ButtonMui>
+        <ButtonMui variant="outlined" disabled>
+          outlined
+        </ButtonMui>
       </div>
       <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">theme: </span>
-        <ButtonMui variant="contained" theme="primary">
-          primary
+        <span className="mr-4">color: primary</span>
+        <ButtonMui variant="text" color="primary">
+          text
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" theme="secondary">
-          secondary
+        <ButtonMui variant="contained" color="primary">
+          contained
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" theme="#800080">
-          #800080
+        <ButtonMui variant="outlined" color="primary">
+          outlined
+        </ButtonMui>
+      </div>
+      <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">color: secondary</span>
+        <ButtonMui variant="text" color="secondary">
+          text
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="contained" color="secondary">
+          contained
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="outlined" color="secondary">
+          outlined
+        </ButtonMui>
+      </div>
+      <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">color: #800080</span>
+        <ButtonMui variant="text" color="#800080">
+          text
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="contained" color="#800080">
+          contained
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="outlined" color="#800080">
+          outlined
+        </ButtonMui>
+      </div>
+      <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">color: #ffff00</span>
+        <ButtonMui variant="text" color="#ffff00">
+          text
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="contained" color="#ffff00">
+          contained
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="outlined" color="#ffff00">
+          outlined
         </ButtonMui>
       </div>
     </div>

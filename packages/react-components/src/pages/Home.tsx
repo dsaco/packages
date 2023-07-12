@@ -4,6 +4,8 @@ export default function Home() {
   return (
     <div>
       <header className="text-lg">Home</header>
+      <Link to="/util">utils</Link>
+      <br />
       <Link to="/ripple">ripple</Link>
       <br />
       <Link to="/img">img</Link>
@@ -13,6 +15,8 @@ export default function Home() {
       <Link to="/modal">modal</Link>
       <br />
       <Link to="/switch">switch</Link>
+      <br />
+      <Link to="/button">button</Link>
     </div>
   );
 }
