@@ -43,7 +43,11 @@ export default function UtilPage() {
     // console.log(color3.hexa);
     // console.log(color3.rgba);
     const color4 = Color('#f008');
+    const color5 = Color('rgb(10, 20, 30)');
     console.log(color4.hsl);
+    console.log(color4.hsla);
+    console.log(color5.hsl);
+    console.log(color5.hsla);
   }, []);
   return <div className="h-screen p-5"></div>;
 }

@@ -176,6 +176,8 @@ export const Color = (origin: string) => {
       object.A = A;
       object.rgb = `rgb(${R} ${G} ${B})`;
       object.rgba = `rgb(${R} ${G} ${B} / ${Math.round(A * 100)}%)`;
+      object.hsl = `hsl(${H}deg ${S * 100}% ${L * 100}%)`;
+      object.hsla = `hsl(${H}deg ${S * 100}% ${L * 100}% / ${A * 100}%)`;
     } else {
       throw new Error('color值不合法');
     }
@@ -229,7 +231,34 @@ export const Color = (origin: string) => {
         }
 
         if (propKey === 'hsl' || propKey === 'hsla') {
-          return 'continue';
+          if (!target.rgb) {
+            const R = parseInt((target.hex as string).slice(1, 3), 16);
+            const G = parseInt((target.hex as string).slice(3, 5), 16);
+            const B = parseInt((target.hex as string).slice(5, 7), 16);
+            target.R = R;
+            target.G = G;
+            target.B = B;
+            target.rgb = `rgb(${R} ${G} ${B})`;
+            target.rgba = `rgb(${R} ${G} ${B} / ${Math.round(
+              target.A * 100
+            )}%)`;
+          }
+          const [H, S, L] = rgb2hsl(
+            target.R as number,
+            target.G as number,
+            target.B as number
+          );
+          target.H = H;
+          target.S = S;
+          target.L = L;
+          target.hsl = `hsl(${H}deg ${S * 100}% ${
+            Math.round(L * 10000) / 100
+          }%)`;
+          target.hsla = `hsl(${H}deg ${S * 100}% ${
+            Math.round(L * 10000) / 100
+          }% / ${Math.round(target.A * 10000) / 100}%)`;
+
+          return Reflect.get(target, propKey, receiver);
         }
       }
     },
@@ -249,4 +278,37 @@ const hsl2rgb = (h: number, s: number, l: number) => {
   const G = Math.round(f(8) * 255);
   const B = Math.round(f(4) * 255);
   return [R, G, B];
+};
+
+const rgb2hsl = (r: number, g: number, b: number) => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  let H = 0;
+  let S = 0;
+  const L = (max + min) / 2;
+
+  if (max !== min) {
+    const delta = max - min;
+    S = L > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  }
+
+  if (max !== min) {
+    if (max === r) {
+      H = ((g - b) / (max - min)) % 6;
+    } else if (max === g) {
+      H = (b - r) / (max - min) + 2;
+    } else {
+      H = (r - g) / (max - min) + 4;
+    }
+    H *= 60;
+    if (H < 0) {
+      H += 360;
+    }
+  }
+  return [H, S, L];
 };
