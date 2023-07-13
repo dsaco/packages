@@ -21,6 +21,7 @@
     "publish:utils": "npm publish ./packages/utils",
 
     "start:rc": "pnpm -C packages/react-components start",
+    "test:rc": "pnpm -C packages/react-components test",
     "build:rc": "pnpm -C packages/react-components build",
     "publish:rc": "npm publish ./packages/react-components"
   },

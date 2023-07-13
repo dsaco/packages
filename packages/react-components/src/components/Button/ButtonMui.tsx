@@ -11,11 +11,13 @@ type ButtonMuiProps = ButtonProps & {
   variant?: TypeVariant;
   color?: 'primary' | 'secondary' | string;
   rippleColor?: string;
+  round?: boolean;
 };
 
 type TypeStyledButtonMuiProps = {
   $variant: TypeVariant;
   $color: TypeColor;
+  $round?: boolean;
 };
 
 const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
@@ -24,8 +26,7 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
-  padding: 4px 16px;
+  padding: 0.25rem 1rem;
   overflow: hidden;
   font-size: 0.875rem;
   font-weight: 500;
@@ -35,7 +36,7 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
   cursor: pointer;
   user-select: none;
   border: 0;
-  border-radius: 4px;
+  border-radius: ${({ $round }) => ($round ? '999px' : '4px')};
   outline: none;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -115,8 +116,9 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
 `;
 
 export const ButtonMui: React.FC<ButtonMuiProps> = ({
-  variant = 'text',
+  variant = 'contained',
   color = 'primary',
+  round,
   rippleColor,
   children,
   ...restProps
@@ -149,7 +151,12 @@ export const ButtonMui: React.FC<ButtonMuiProps> = ({
   }, [color]);
 
   return (
-    <StyledButtonMui $variant={variant} $color={$color} {...restProps}>
+    <StyledButtonMui
+      $variant={variant}
+      $color={$color}
+      $round={round}
+      {...restProps}
+    >
       {children}
       <Ripple color={_rippleColor} duration={250} />
     </StyledButtonMui>

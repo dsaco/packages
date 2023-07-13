@@ -1,5 +1,7 @@
 import { ButtonMui } from '@/components/Button';
 
+import styles from './ButtonPage.module.scss';
+
 export default function ButtonPage() {
   return (
     <div className="h-screen p-5">
@@ -28,6 +30,25 @@ export default function ButtonPage() {
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
         <ButtonMui variant="outlined" color="primary">
+          outlined
+        </ButtonMui>
+      </div>
+      <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">color: primary round</span>
+        <ButtonMui variant="text" color="primary" round>
+          text
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui
+          variant="contained"
+          color="primary"
+          round
+          className={`${styles.rounded} ${styles.a}`}
+        >
+          contained styles className
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui variant="outlined" color="primary" round>
           outlined
         </ButtonMui>
       </div>

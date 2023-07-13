@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SwitchProps } from '.';
+import { Color, TypeColor } from '../utils/color';
+
 import { IconLoading } from '../common/icons';
-import { darken } from '../common/utils';
 
 type SwitchAntProps = SwitchProps & {
   loading?: boolean;
@@ -21,8 +22,8 @@ type TypeStyledSwitchAntProps = {
   $width?: number;
   $height: number;
   $padding: number;
-  $activeColor: string;
-  $inactiveColor: string;
+  $activeColor: TypeColor;
+  $inactiveColor: TypeColor;
 };
 
 const StyledSwitchInner = styled.div<TypeStyledSwitchAntProps>`
@@ -117,7 +118,7 @@ const StyledSwitchAnt = styled.button<TypeStyledSwitchAntProps>`
   cursor: pointer;
   user-select: none;
   background-color: ${({ $checked, $activeColor, $inactiveColor }) =>
-    $checked ? $activeColor : $inactiveColor};
+    $checked ? $activeColor.rgb : $inactiveColor.rgb};
   border: 0;
   border-radius: ${({ $height }) => $height}px;
   outline: 0;
@@ -161,7 +162,7 @@ const StyledSwitchAnt = styled.button<TypeStyledSwitchAntProps>`
 
   &:hover:not(:disabled) {
     background-color: ${({ $checked, $activeColor, $inactiveColor }) =>
-      $checked ? darken($activeColor, -10) : darken($inactiveColor, 10)};
+      $checked ? $activeColor.darken(-0.2) : $inactiveColor.darken(0.2)};
   }
 `;
 
@@ -184,8 +185,8 @@ export const SwitchAnt: React.FC<SwitchAntProps> = ({
     $width: width,
     $height: height,
     $padding: padding,
-    $activeColor: activeColor,
-    $inactiveColor: inactiveColor,
+    $activeColor: Color(activeColor),
+    $inactiveColor: Color(inactiveColor),
   };
   return (
     <StyledSwitchAnt
