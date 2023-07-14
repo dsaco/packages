@@ -42,12 +42,17 @@ export default function UtilPage() {
     // console.log(color3.hexa);
     // console.log(color3.hexa);
     // console.log(color3.rgba);
-    const color4 = Color('#f008');
-    const color5 = Color('rgb(10, 20, 30)');
-    console.log(color4.hsl);
-    console.log(color4.hsla);
-    console.log(color5.hsl);
-    console.log(color5.hsla);
+    // const color4 = Color('#f008');
+    // console.log(color4.hsl);
+    // console.log(color4.hsla);
+    // const color5 = Color('rgb(10, 20, 30)');
+    // console.log(color5.hex);
+    // console.log(color5.hexa);
+    const hex = Color('hsla(0deg 100% 50% / 50%)');
+    console.log(hex.darken(0.1));
+    console.log(hex.hsl, hex.hsla);
+    // console.log(hex.rgb, hex.rgba);
+    console.log(hex.rgb, hex.rgba);
   }, []);
   return <div className="h-screen p-5"></div>;
 }

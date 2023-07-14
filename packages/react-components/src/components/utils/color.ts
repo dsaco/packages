@@ -1,5 +1,27 @@
+// #f00 #f00f #ff0000 #ff0000ff
+const REG_MATCH_HEX = /^#[\da-f]{3,8}$/i;
+// rgb(255 0 0) rgba(255 0 0) rgb(255 0 0 / 50%) rgba(255 0 0 / 0.5)
+const REG_MATCH_RGB_SPACE =
+  /^rgba?\(\s*((\d+\.)?\d+)\s+((\d+\.)?\d+)\s+((\d+\.)?\d+)\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+// rgb(255, 0, 0) rgba(255, 0, 0) rgb(255, 0, 0, 50%) rgba(255, 0, 0, 0.5)
+const REG_MATCH_RGB_COMMA =
+  /^rgba?\(\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*(,\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+// hsl(0deg 100% 50%) hsla(0deg 100% 50%) hsl(0deg 100% 50% / 50%) hsla(0deg 100% 50% / 50%)
+const REG_MATCH_HSL_SPACE =
+  /^hsla?\(\s*((\d+\.)?\d+)deg\s*((\d+\.)?\d+)%\s*((\d+\.)?\d+)%\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+// hsl(0deg, 100%, 50%) hsla(0deg, 100%, 50%) hsl(0deg, 100%, 50%, 50%) hsla(0deg, 100%, 50%, 50%)
+const REG_MATCH_HSL_COMMA =
+  /^hsla?\(\s*((\d+\.)?\d+)deg\s*,\s*((\d+\.)?\d+)%\s*,\s*((\d+\.)?\d+)%\s*(,\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+
+enum ColorType {
+  Hex,
+  Rgb,
+  Hsl,
+}
+
 export type TypeColor = {
   origin: string;
+  type?: ColorType;
 
   hex?: string;
   hexa?: string;
@@ -24,8 +46,21 @@ export type TypeColor = {
 function darken(this: TypeColor, coefficient: number) {
   coefficient = clamp(coefficient, -1, 1);
 
-  if (this.origin.startsWith('hsl')) {
-    return 'not implement';
+  if (this.type === ColorType.Hsl) {
+    const l = (this.L as number) * (1 - coefficient);
+
+    const _H = Math.round((this.H as number) % 360);
+    const _S = clamp(Math.round(this.S as number), 0, 100);
+    const _L = clamp(Math.round(l), 0, 100);
+    if (this.A === 1) {
+      return `hsl(${_H}deg ${_S}% ${_L})%`;
+    } else {
+      return `hsl(${_H}deg ${_S}% ${_L}% / ${clamp(
+        Math.round(this.A * 100),
+        0,
+        100
+      )}%)`;
+    }
   } else {
     const red = clamp(
       Math.floor((this.R as number) * (1 - coefficient)),
@@ -52,7 +87,7 @@ function darken(this: TypeColor, coefficient: number) {
 }
 function alpha(this: TypeColor, coefficient: number) {
   coefficient = clamp(coefficient);
-  return `rgba(${this.R}, ${this.G}, ${this.B}, ${coefficient})`;
+  return `rgb(${this.R} ${this.G} ${this.B} / ${coefficient * 100}%)`;
 }
 
 export const Color = (origin: string) => {
@@ -66,39 +101,44 @@ export const Color = (origin: string) => {
   };
 
   let matches;
-  const originLen = origin.length;
-  if (origin.match(/^#[\da-f]{3,8}$/i)) {
+  if (origin.match(REG_MATCH_HEX)) {
+    origin = origin.toLowerCase();
+    const originLen = origin.length;
+
     if (originLen === 4) {
-      // #f00
       object.hex = `#${origin[1].repeat(2)}${origin[2].repeat(
         2
       )}${origin[3].repeat(2)}`;
+      object.hexa = `${object.hex}ff`;
+
+      object.type = ColorType.Hex;
     } else if (originLen === 5) {
-      // #f00f
       object.hex = `#${origin[1].repeat(2)}${origin[2].repeat(
         2
       )}${origin[3].repeat(2)}`;
       object.hexa = `${object.hex}${origin[4].repeat(2)}`;
       object.A = parseInt(origin[4].repeat(2), 16) / 255;
+
+      object.type = ColorType.Hex;
     } else if (originLen === 7) {
-      // #ff0000
       object.hex = origin;
+      object.hexa = `${origin}ff`;
+
+      object.type = ColorType.Hex;
     } else if (originLen === 9) {
-      // #ff0000ff
       object.hex = origin.slice(0, 7);
       object.hexa = origin;
       object.A = parseInt(origin.slice(7), 16) / 255;
+
+      object.type = ColorType.Hex;
     } else {
       throw new Error('color值不合法');
     }
   } else if (origin.startsWith('rgb')) {
     if (
-      (matches = origin.match(
-        /^rgba?\(\s*((\d+\.)?\d+)\s+((\d+\.)?\d+)\s+((\d+\.)?\d+)\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/
-      ))
+      (matches = origin.match(REG_MATCH_RGB_SPACE)) ||
+      (matches = origin.match(REG_MATCH_RGB_COMMA))
     ) {
-      // rgb(255 0 0) rgba(255 0 0)
-      // rgb(255 0 0 / 50%) rgba(255 0 0 / 0.5)
       const R = clamp(Number(matches[1]), 0, 255);
       const G = clamp(Number(matches[3]), 0, 255);
       const B = clamp(Number(matches[5]), 0, 255);
@@ -112,49 +152,30 @@ export const Color = (origin: string) => {
           A = Number(matches[8]);
         }
       }
+      object.type = ColorType.Rgb;
       object.R = R;
       object.G = G;
       object.B = B;
       object.A = A;
-      object.rgb = `rgb(${R} ${G} ${B})`;
-      object.rgba = `rgb(${R} ${G} ${B} / ${Math.round(A * 100)}%)`;
-    } else if (
-      (matches = origin.match(
-        /^rgba?\(\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*(,\s*((\d+\.)?\d+)(%)?\s*)?\)$/
-      ))
-    ) {
-      // rgb(255, 0, 0) rgba(255, 0, 0)
-      // rgb(255, 0, 0, 50%) rgba(255, 0, 0, 0.5)
-      const R = clamp(Number(matches[1]), 0, 255);
-      const G = clamp(Number(matches[3]), 0, 255);
-      const B = clamp(Number(matches[5]), 0, 255);
-      let A = 1;
-      if (matches[7]) {
-        // 命中百分号
-        if (matches[10]) {
-          A = Number(matches[8]) / 100;
-        } else {
-          A = Number(matches[8]);
-        }
-      }
-      object.R = R;
-      object.G = G;
-      object.B = B;
-      object.A = A;
-      object.rgb = `rgb(${R} ${G} ${B})`;
-      object.rgba = `rgb(${R} ${G} ${B} / ${Math.round(A * 100)}%)`;
+
+      const _R = Math.round(R);
+      const _G = Math.round(G);
+      const _B = Math.round(B);
+      const _A = clamp(Math.round(A * 100), 0, 100);
+
+      object.rgb = `rgb(${_R} ${_G} ${_B})`;
+      object.rgba = `rgb(${_R} ${_G} ${_B} / ${_A}%)`;
     } else {
       throw new Error('color值不合法');
     }
   } else if (origin.startsWith('hsl')) {
     if (
-      (matches = origin.match(
-        /^hsla?\(\s*((\d+\.)?\d+)deg\s*((\d+\.)?\d+)%\s*((\d+\.)?\d+)%\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/
-      ))
+      (matches = origin.match(REG_MATCH_HSL_SPACE)) ||
+      (matches = origin.match(REG_MATCH_HSL_COMMA))
     ) {
       const H = Number(matches[1]);
-      const S = Number(matches[3]) / 100;
-      const L = Number(matches[5]) / 100;
+      const S = Number(matches[3]);
+      const L = Number(matches[5]);
       let A = 1;
       if (matches[7]) {
         // 命中百分号
@@ -164,20 +185,19 @@ export const Color = (origin: string) => {
           A = Number(matches[8]);
         }
       }
-
-      const [R, G, B] = hsl2rgb(H, S, L);
-
+      object.type = ColorType.Hsl;
       object.H = H;
       object.S = S;
       object.L = L;
-      object.R = R;
-      object.G = G;
-      object.B = B;
       object.A = A;
-      object.rgb = `rgb(${R} ${G} ${B})`;
-      object.rgba = `rgb(${R} ${G} ${B} / ${Math.round(A * 100)}%)`;
-      object.hsl = `hsl(${H}deg ${S * 100}% ${L * 100}%)`;
-      object.hsla = `hsl(${H}deg ${S * 100}% ${L * 100}% / ${A * 100}%)`;
+
+      const _H = Math.round(H % 360);
+      const _S = clamp(Math.round(S), 0, 100);
+      const _L = clamp(Math.round(L), 0, 100);
+      const _A = clamp(Math.round(A * 100), 0, 100);
+
+      object.hsl = `hsl(${_H}deg ${_S}% ${_L}%)`;
+      object.hsla = `hsl(${_H}deg ${_S}% ${_L}% / ${_A}%)`;
     } else {
       throw new Error('color值不合法');
     }
@@ -190,75 +210,120 @@ export const Color = (origin: string) => {
       if (Reflect.has(target, propKey)) {
         return Reflect.get(target, propKey, receiver);
       } else {
-        if (propKey === 'hex') {
-          const hex = `#${Math.round(target.R as number)
-            ?.toString(16)
-            .padStart(2, '0')}${Math.round(target.G as number)
-            ?.toString(16)
-            .padStart(2, '0')}${Math.round(target.B as number)
-            ?.toString(16)
-            .padStart(2, '0')}`;
-          Reflect.set(target, propKey, hex, receiver);
-          return Reflect.get(target, propKey, receiver);
+        if (propKey === 'hex' || propKey === 'hexa') {
+          if (target.type === ColorType.Rgb) {
+            const [R, G, B] = rgb2hex(
+              target.R as number,
+              target.G as number,
+              target.B as number
+            );
+            const hex = `#${R}${G}${B}`;
+            const A = clamp(Math.round(target.A * 255), 0, 255)
+              .toString(16)
+              .padStart(2, '0');
+            const hexa = `${hex}${A}`;
+            Reflect.set(target, 'hex', hex, receiver);
+            Reflect.set(target, 'hexa', hexa, receiver);
+
+            return Reflect.get(target, propKey, receiver);
+          } else if (target.type === ColorType.Hsl) {
+            const [R, G, B] = hsl2rgb(
+              target.H as number,
+              (target.S as number) / 100,
+              (target.L as number) / 100
+            );
+
+            const [HEXR, HEXG, HEXB] = rgb2hex(R, G, B);
+            const HEXA = clamp(Math.round(target.A * 255), 0, 255)
+              .toString(16)
+              .padStart(2, '0');
+
+            const hex = `#${HEXR}${HEXG}${HEXB}`;
+            const hexa = `${hex}${HEXA}`;
+
+            target.hex = hex;
+            target.hexa = hexa;
+
+            return Reflect.get(target, propKey, receiver);
+          }
         }
-        if (propKey === 'hexa') {
-          const hexa = `#${Math.round(target.R as number)
-            ?.toString(16)
-            .padStart(2, '0')}${Math.round(target.G as number)
-            ?.toString(16)
-            .padStart(2, '0')}${Math.round(target.B as number)
-            ?.toString(16)
-            .padStart(2, '0')}${Math.round(target.A * 255)
-            .toString(16)
-            .padStart(2, '0')}`;
-          Reflect.set(target, propKey, hexa, receiver);
-          return Reflect.get(target, propKey, receiver);
-        }
+
         if (
           propKey === 'rgb' ||
           propKey === 'rgba' ||
           ['R', 'G', 'B'].includes(propKey as string)
         ) {
-          const R = parseInt((target.hex as string).slice(1, 3), 16);
-          const G = parseInt((target.hex as string).slice(3, 5), 16);
-          const B = parseInt((target.hex as string).slice(5, 7), 16);
-          target.R = R;
-          target.G = G;
-          target.B = B;
-          target.rgb = `rgb(${R} ${G} ${B})`;
-          target.rgba = `rgb(${R} ${G} ${B} / ${Math.round(target.A * 100)}%)`;
-          return Reflect.get(target, propKey, receiver);
-        }
+          if (target.type === ColorType.Hex) {
+            const [R, G, B] = hex2rgb(target.hex as string);
 
-        if (propKey === 'hsl' || propKey === 'hsla') {
-          if (!target.rgb) {
-            const R = parseInt((target.hex as string).slice(1, 3), 16);
-            const G = parseInt((target.hex as string).slice(3, 5), 16);
-            const B = parseInt((target.hex as string).slice(5, 7), 16);
+            const _R = Math.round(R);
+            const _G = Math.round(G);
+            const _B = Math.round(B);
+            const _A = clamp(Math.round(target.A * 100), 0, 100);
+
+            target.R = R;
+            target.G = G;
+            target.B = B;
+            target.rgb = `rgb(${_R} ${_G} ${_B})`;
+            target.rgba = `rgb(${_R} ${_G} ${_B} / ${_A}%)`;
+
+            return Reflect.get(target, propKey, receiver);
+          } else if (target.type === ColorType.Hsl) {
+            const [R, G, B] = hsl2rgb(
+              target.H as number,
+              (target.S as number) / 100,
+              (target.L as number) / 100
+            );
+            const _A = clamp(Math.round(target.A * 100), 0, 100);
+
             target.R = R;
             target.G = G;
             target.B = B;
             target.rgb = `rgb(${R} ${G} ${B})`;
-            target.rgba = `rgb(${R} ${G} ${B} / ${Math.round(
-              target.A * 100
-            )}%)`;
-          }
-          const [H, S, L] = rgb2hsl(
-            target.R as number,
-            target.G as number,
-            target.B as number
-          );
-          target.H = H;
-          target.S = S;
-          target.L = L;
-          target.hsl = `hsl(${H}deg ${S * 100}% ${
-            Math.round(L * 10000) / 100
-          }%)`;
-          target.hsla = `hsl(${H}deg ${S * 100}% ${
-            Math.round(L * 10000) / 100
-          }% / ${Math.round(target.A * 10000) / 100}%)`;
+            target.rgba = `rgb(${R} ${G} ${B} / ${_A}%)`;
 
-          return Reflect.get(target, propKey, receiver);
+            return Reflect.get(target, propKey, receiver);
+          }
+        }
+
+        if (propKey === 'hsl' || propKey === 'hsla') {
+          if (target.type === ColorType.Rgb) {
+            const [H, S, L] = rgb2hsl(
+              target.R as number,
+              target.G as number,
+              target.B as number
+            );
+            target.H = H;
+            target.S = S;
+            target.L = L;
+
+            const _H = Math.round(H * 100) / 100;
+            const _S = Math.round(S * 100) / 100;
+            const _L = Math.round(L * 100) / 100;
+            const _A = Math.round(target.A * 10000) / 100;
+
+            target.hsl = `hsl(${_H}deg ${_S}% ${_L}%)`;
+            target.hsla = `hsl(${_H}deg ${_S}% ${_L}% / ${_A}%)`;
+
+            return Reflect.get(target, propKey, receiver);
+          } else if (target.type === ColorType.Hex) {
+            const [R, G, B] = hex2rgb(target.hex as string);
+            const [H, S, L] = rgb2hsl(R, G, B);
+
+            target.H = H;
+            target.S = S;
+            target.L = L;
+
+            const _H = Math.round(H * 100) / 100;
+            const _S = Math.round(S * 100) / 100;
+            const _L = Math.round(L * 100) / 100;
+            const _A = Math.round(target.A * 10000) / 100;
+
+            target.hsl = `hsl(${_H}deg ${_S}% ${_L}%)`;
+            target.hsla = `hsl(${_H}deg ${_S}% ${_L}% / ${_A}%)`;
+
+            return Reflect.get(target, propKey, receiver);
+          }
         }
       }
     },
@@ -295,20 +360,34 @@ const rgb2hsl = (r: number, g: number, b: number) => {
   if (max !== min) {
     const delta = max - min;
     S = L > 0.5 ? delta / (2 - max - min) : delta / (max + min);
-  }
 
-  if (max !== min) {
-    if (max === r) {
-      H = ((g - b) / (max - min)) % 6;
-    } else if (max === g) {
-      H = (b - r) / (max - min) + 2;
-    } else {
-      H = (r - g) / (max - min) + 4;
+    if (r === max) {
+      H = (60 * (g - b)) / delta;
+    } else if (g === max) {
+      H = (60 * (b - r)) / delta + 120;
+    } else if (b === max) {
+      H = (60 * (r - g)) / delta + 240;
     }
-    H *= 60;
     if (H < 0) {
       H += 360;
     }
+    H %= 360;
   }
-  return [H, S, L];
+  return [H, S * 100, L * 100];
+};
+
+const rgb2hex = (r: number, g: number, b: number) => {
+  const R = Math.round(r).toString(16).padStart(2, '0');
+  const G = Math.round(g).toString(16).padStart(2, '0');
+  const B = Math.round(b).toString(16).padStart(2, '0');
+
+  return [R, G, B];
+};
+
+const hex2rgb = (hex: string) => {
+  const R = parseInt(hex.slice(1, 3), 16);
+  const G = parseInt(hex.slice(3, 5), 16);
+  const B = parseInt(hex.slice(5, 7), 16);
+
+  return [R, G, B];
 };
