@@ -132,7 +132,7 @@ export const Color = (origin: string) => {
 
       object.type = ColorType.Hex;
     } else {
-      throw new Error('color值不合法');
+      throw new TypeError(`Invalid Hex Color: ${origin}`);
     }
   } else if (origin.startsWith('rgb')) {
     if (
@@ -166,7 +166,7 @@ export const Color = (origin: string) => {
       object.rgb = `rgb(${_R} ${_G} ${_B})`;
       object.rgba = `rgb(${_R} ${_G} ${_B} / ${_A}%)`;
     } else {
-      throw new Error('color值不合法');
+      throw new TypeError(`Invalid Rgb Color: ${origin}`);
     }
   } else if (origin.startsWith('hsl')) {
     if (
@@ -199,10 +199,10 @@ export const Color = (origin: string) => {
       object.hsl = `hsl(${_H}deg ${_S}% ${_L}%)`;
       object.hsla = `hsl(${_H}deg ${_S}% ${_L}% / ${_A}%)`;
     } else {
-      throw new Error('color值不合法');
+      throw new TypeError(`Invalid Hsl Color: ${origin}`);
     }
   } else {
-    throw new Error('color值不合法');
+    throw new TypeError(`Invalid Color: ${origin}`);
   }
 
   return new Proxy(object, {
