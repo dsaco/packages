@@ -28,8 +28,6 @@ const Ripple: React.FC<RippleProps> = ({
   });
 
   const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
     lastTouchTime.current = Date.now();
 
     const { x, y, width, height } = (

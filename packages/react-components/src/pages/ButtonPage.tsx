@@ -1,4 +1,4 @@
-import { ButtonMui } from '@/components/Button';
+import { ButtonAnt, ButtonMui } from '@/components/Button';
 
 import styles from './ButtonPage.module.scss';
 
@@ -6,6 +6,24 @@ export default function ButtonPage() {
   return (
     <div className="h-screen p-5">
       <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">placeholder</span>
+        <ButtonAnt>text</ButtonAnt>
+        <ButtonMui
+          variant="text"
+          onClick={() => {
+            console.log('click');
+          }}
+          onMouseDown={() => {
+            console.log('mousedown');
+          }}
+          onMouseUp={() => {
+            console.log('mouseup');
+          }}
+        >
+          text
+        </ButtonMui>
+      </div>
+      {/* <div className="flex items-center border-zinc-500 border-b py-2">
         <span className="mr-4">variant: disabled</span>
         <ButtonMui variant="text" disabled>
           text
@@ -93,7 +111,7 @@ export default function ButtonPage() {
         <ButtonMui variant="outlined" color="#ffff00">
           outlined
         </ButtonMui>
-      </div>
+      </div> */}
     </div>
   );
 }
