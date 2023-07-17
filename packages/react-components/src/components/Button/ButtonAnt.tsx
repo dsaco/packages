@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 import type { ButtonProps } from '.';
 import { Color, TypeColor } from '../utils/color';
+import { Wave } from '../Wave';
 
 type ButtonAntProps = ButtonProps & {
   loading?: boolean;
@@ -42,11 +43,11 @@ const StyledWave = styled.div`
   border-radius: 6px;
   box-shadow: 0 0 0 0 #1677ff;
   opacity: 0.2;
-  transition: box-shadow 0.4s cubic-bezier(0.08, 0.82, 0.17, 1),
+  transition: box-shadow 1s cubic-bezier(0.08, 0.82, 0.17, 1),
     opacity 2s cubic-bezier(0.08, 0.82, 0.17, 1);
 
   &:hover {
-    box-shadow: 0 0 0 6px #1677ff;
+    box-shadow: 0 0 0 16px #1677ff;
     opacity: 0;
   }
 `;
@@ -55,7 +56,8 @@ export const ButtonAnt: React.FC<ButtonAntProps> = ({ children }) => {
   return (
     <StyledButtonAnt>
       {children}
-      <StyledWave></StyledWave>
+      <Wave />
+      {/* <StyledWave></StyledWave> */}
     </StyledButtonAnt>
   );
 };
