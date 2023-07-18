@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/utils",
-  "version": "0.1.10",
+  "version": "0.1.12",
   "publishConfig": {
     "access": "public"
   },
@@ -13,6 +13,12 @@
     "build:esm": "tsc -p ./esm.tsconfig.json",
     "start": "react-scripts start"
   },
+  "files": [
+    "es",
+    "lib",
+    "package.json",
+    "README.md"
+  ],
   "peerDependencies": {
     "axios": "^1.2.1"
   },
