@@ -1,3 +1,4 @@
+import path from 'path';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
@@ -5,7 +6,11 @@ import json from '@rollup/plugin-json';
 import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
 
 // 入口文件
-const entry = ['./src/components/index.ts'];
+const entry = [
+  './src/components/index.ts',
+  './src/components/Button/index.ts',
+  './src/components/Ripple/index.tsx',
+];
 
 // babel配置
 // const babelOptions: RollupBabelInputPluginOptions = {
@@ -23,15 +28,19 @@ export default {
   output: [
     {
       dir: 'es',
-      format: 'esm',
-      plugins: [
-        // getBabelOutputPlugin({
-        //   presets: ['@babel/preset-env'],
-        //   plugins: [
-        //     // ['@babel/plugin-transform-runtime', { useESModules: true }],
-        //   ],
-        // }),
-      ],
+      format: 'es',
+      assetFileNames: ({ name }) => {
+        console.log(name);
+        return '[name].[ext]';
+      },
+      // plugins: [
+      //   getBabelOutputPlugin({
+      //     presets: ['@babel/preset-env'],
+      //     plugins: [
+      //       // ['@babel/plugin-transform-runtime', { useESModules: true }],
+      //     ],
+      //   }),
+      // ],
     },
   ],
   // 插件配置
@@ -48,6 +57,15 @@ export default {
     babel({
       babelHelpers: 'runtime',
       exclude: '**/node_modules/**',
+      // presets: [
+      //   ['@babel/preset-env', { modules: false }],
+      //   [
+      //     '@babel/preset-react',
+      //     {
+      //       runtime: 'automatic',
+      //     },
+      //   ],
+      // ],
     }),
   ],
   external: [

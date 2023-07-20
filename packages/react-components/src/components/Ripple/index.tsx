@@ -8,12 +8,12 @@ type TypeRipple = {
   height: number;
 };
 
-type RippleProps = {
+export type RippleProps = {
   color?: string;
   duration?: number;
 };
 
-const Ripple: React.FC<RippleProps> = ({
+export const Ripple: React.FC<RippleProps> = ({
   color = 'rgba(0, 0, 0, 0.3)',
   duration = 300,
 }) => {
@@ -84,5 +84,3 @@ const Ripple: React.FC<RippleProps> = ({
     </div>
   );
 };
-
-export default Ripple;

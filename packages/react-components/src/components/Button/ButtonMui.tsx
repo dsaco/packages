@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
-import Ripple from '../Ripple';
+import { Ripple } from '../Ripple';
 
 import type { ButtonProps } from '.';
 import { Color } from '@dsaco/utils';
 import type { TypeColor } from '@dsaco/utils';
 
 type TypeVariant = 'text' | 'contained' | 'outlined';
-type ButtonMuiProps = ButtonProps & {
+export type ButtonMuiProps = ButtonProps & {
   variant?: TypeVariant;
   color?: 'primary' | 'secondary' | string;
   rippleColor?: string;

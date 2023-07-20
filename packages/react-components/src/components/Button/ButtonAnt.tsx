@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 import type { ButtonProps } from '.';
-import { Wave } from '../Wave';
+// import { Wave } from '../Wave';
 
-type ButtonAntProps = ButtonProps & {
+export type ButtonAntProps = ButtonProps & {
   loading?: boolean;
   shape?: 'default' | 'circle' | 'round';
   size?: 'large' | 'middle' | 'small';
@@ -55,7 +55,7 @@ export const ButtonAnt: React.FC<ButtonAntProps> = ({ children }) => {
   return (
     <StyledButtonAnt>
       {children}
-      <Wave />
+      {/* <Wave /> */}
       {/* <StyledWave></StyledWave> */}
     </StyledButtonAnt>
   );

@@ -17,6 +17,7 @@
     }
   },
   "ignorePatterns": [
+    "es",
     "setupProxy.js",
     "*.config.js"
   ],
