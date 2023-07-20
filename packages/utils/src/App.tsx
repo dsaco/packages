@@ -10,9 +10,11 @@ type ErrorData = {
   statusCode: number;
 };
 
-const Request = new _Request(undefined, (e) => {
-  console.log((e.response?.data as ErrorData)?.message);
-  return Promise.reject(e.response?.statusText);
+const Request = new _Request({
+  onResRejected(e) {
+    console.log((e.response?.data as ErrorData)?.message);
+    return Promise.reject(e.response?.statusText);
+  },
 });
 
 interface ResponseRecords<T> {
