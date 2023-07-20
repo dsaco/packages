@@ -9,7 +9,8 @@
   "author": "dsaco",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build": "craco build",
+    "build": "npm run clean && rollup --config rollup.config.ts --configPlugin typescript",
+    "clean": "rimraf ./lib & rimraf ./es",
     "eject": "react-scripts eject",
     "fix": "npm run fix:script & npm run fix:style",
     "fix:script": "npm run lint:script -- --fix",
@@ -20,6 +21,8 @@
     "test": "craco test"
   },
   "peerDependencies": {
+    "@babel/runtime": "^7.22.6",
+    "@dsaco/utils": "workspace:^",
     "@react-spring/web": "^9.7.2",
     "styled-components": "^6.0.2"
   },
@@ -37,9 +40,19 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
+    "@babel/runtime": "^7.22.6",
     "@craco/craco": "^7.1.0",
     "@dsaco/eslint-config": "^1.0.3",
+    "@dsaco/utils": "workspace:^",
     "@react-spring/web": "^9.7.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.2",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "craco-less": "^2.1.0-alpha.0",
@@ -53,6 +66,11 @@
     "postcss-scss": "^4.0.6",
     "postcss-styled-syntax": "^0.4.0",
     "prettier": "^2.8.8",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.26.3",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.35.0",
     "sass": "^1.63.6",
     "source-map-explorer": "^2.5.3",
     "styled-components": "^6.0.2",

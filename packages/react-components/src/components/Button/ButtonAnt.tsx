@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 import type { ButtonProps } from '.';
-import { Color, TypeColor } from '../utils/color';
 import { Wave } from '../Wave';
 
 type ButtonAntProps = ButtonProps & {

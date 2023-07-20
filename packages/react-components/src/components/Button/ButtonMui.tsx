@@ -4,7 +4,8 @@ import styled, { css } from 'styled-components';
 import Ripple from '../Ripple';
 
 import type { ButtonProps } from '.';
-import { Color, TypeColor } from '../utils/color';
+import { Color } from '@dsaco/utils';
+import type { TypeColor } from '@dsaco/utils';
 
 type TypeVariant = 'text' | 'contained' | 'outlined';
 type ButtonMuiProps = ButtonProps & {
