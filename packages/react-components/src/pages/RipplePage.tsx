@@ -1,4 +1,4 @@
-import { Ripple } from '@/components/Ripple';
+import { Ripple } from '@/components';
 
 export default function RipplePage() {
   return (
@@ -15,7 +15,7 @@ export default function RipplePage() {
           console.log('click');
         }}
       >
-        <Ripple duration={1000} />
+        <Ripple duration={300} />
       </div>
     </div>
   );
