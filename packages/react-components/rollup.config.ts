@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
-import babel from '@rollup/plugin-babel';
+import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
 import dts from 'rollup-plugin-dts';
 
 // 入口文件
@@ -53,12 +53,11 @@ export default [
         //     ],
         //   }),
         // ],
-      },
-      {
-        dir: 'lib',
-        format: 'cjs',
-
-        preserveModules: true,
+        // plugins: [
+        //   typescript({
+        //     tsconfig: 'build.tsconfig.json',
+        //   }),
+        // ],
       },
     ],
     // 插件配置
@@ -97,6 +96,62 @@ export default [
       /@babel\/runtime/,
     ],
   },
+  {
+    // 入口
+    input: entry,
+    // 打包信息
+    output: [
+      {
+        dir: 'lib',
+        format: 'cjs',
+        preserveModules: true,
+        plugins: [
+          getBabelOutputPlugin({
+            presets: ['@babel/preset-env'],
+            plugins: [
+              ['@babel/plugin-transform-runtime', { useESModules: false }],
+            ],
+          }),
+        ],
+      },
+    ],
+    // 插件配置
+    plugins: [
+      // 可使用 `import {module} from './file'` 替换 `import {module} from './file/index.js`
+      resolve(),
+      // 支持commonjs，包括第三方引入使用到commonjs语法
+      commonjs(),
+      // typescript支持
+      typescript({
+        tsconfig: 'build2.tsconfig.json',
+      }),
+      // 支持读取json文件
+      json(),
+      // babel
+      babel({
+        babelHelpers: 'runtime',
+        exclude: '**/node_modules/**',
+        // presets: [
+        //   ['@babel/preset-env', { modules: false }],
+        //   [
+        //     '@babel/preset-react',
+        //     {
+        //       runtime: 'automatic',
+        //     },
+        //   ],
+        // ],
+      }),
+    ],
+    external: [
+      'react',
+      'react-dom',
+      'styled-components',
+      '@react-spring/web',
+      '@dsaco/utils',
+      /@babel\/runtime/,
+    ],
+  },
+
   // {
   //   input: './src/components/index.ts',
   //   output: [

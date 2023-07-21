@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
+  },
+  "files": [
+    "src/components/index.ts",
+    "src/components/Ripple/index.tsx",
+    "src/components/Test/index.tsx"
+  ],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}
