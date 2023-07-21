@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledSpan = styled.span`
-  color: red;
+const StyledSpan = styled.span<{
+  color: string;
+}>`
+  color: ${({ color }) => color};
 `;
 
 export type TestProps = {
@@ -22,5 +24,5 @@ export const Test: React.FC<TestProps> = ({ color, ...rest }) => {
   };
   console.log(rest);
   console.log(rest.obj?.name ?? 'abc');
-  return <StyledSpan>{`hello ${color}`}</StyledSpan>;
+  return <StyledSpan color="red">{`hello ${color}`}</StyledSpan>;
 };

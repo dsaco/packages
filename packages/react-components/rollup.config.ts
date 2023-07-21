@@ -1,16 +1,16 @@
-import path from 'path';
+// import path from 'path';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
-import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
+import babel from '@rollup/plugin-babel';
 import dts from 'rollup-plugin-dts';
 
 // 入口文件
 const entry = [
   './src/components/index.ts',
   './src/components/Test/index.tsx',
-  './src/components/Ripple/index.ts',
+  './src/components/Ripple/index.tsx',
 
   // './src/components/Button/index.ts',
   // './src/components/Ripple/index.tsx',
@@ -54,12 +54,12 @@ export default [
         //   }),
         // ],
       },
-      // {
-      //   dir: 'lib',
-      //   format: 'cjs',
+      {
+        dir: 'lib',
+        format: 'cjs',
 
-      //   preserveModules: true,
-      // },
+        preserveModules: true,
+      },
     ],
     // 插件配置
     plugins: [
@@ -69,8 +69,7 @@ export default [
       commonjs(),
       // typescript支持
       typescript({
-        tsconfig: './build.tsconfig.json',
-
+        tsconfig: 'build.tsconfig.json',
       }),
       // 支持读取json文件
       json(),
@@ -98,22 +97,22 @@ export default [
       /@babel\/runtime/,
     ],
   },
-  {
-    input: './src/components/index.ts',
-    output: [
-      {
-        dir: 'es',
-        format: 'es',
-        // chunkFileNames: ({ name }) => {
-        //   if (name === 'index') {
-        //     return `${name}.d.ts`;
-        //   }
-        //   return `${name}/${name}.d.ts`;
-        // },
-        // preserveModules: true,
-        // preserveModulesRoot: 'src',
-      },
-    ],
-    plugins: [dts()],
-  },
+  // {
+  //   input: './src/components/index.ts',
+  //   output: [
+  //     {
+  //       dir: 'es',
+  //       format: 'es',
+  //       // chunkFileNames: ({ name }) => {
+  //       //   if (name === 'index') {
+  //       //     return `${name}.d.ts`;
+  //       //   }
+  //       //   return `${name}/${name}.d.ts`;
+  //       // },
+  //       // preserveModules: true,
+  //       // preserveModulesRoot: 'src',
+  //     },
+  //   ],
+  //   plugins: [dts()],
+  // },
 ];
