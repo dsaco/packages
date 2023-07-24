@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
 import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
-import dts from 'rollup-plugin-dts';
+// import dts from 'rollup-plugin-dts';
 
 // 入口文件
 const entry = [
@@ -27,65 +27,42 @@ const entry = [
 // rollup配置
 export default [
   {
-    // 入口
     input: entry,
-    // 打包信息
     output: [
       {
         dir: 'es',
         format: 'es',
-
         preserveModules: true,
-        // preserveModulesRoot: 'src/components',
-
-        // entryFileNames: ({ name }) => {
-        //   if (name === 'index') {
-        //     return `${name}.js`;
-        //   }
-        //   return `${name}/index.js`;
-        // },
-
-        // plugins: [
-        //   getBabelOutputPlugin({
-        //     presets: ['@babel/preset-env'],
-        //     plugins: [
-        //       // ['@babel/plugin-transform-runtime', { useESModules: true }],
-        //     ],
-        //   }),
-        // ],
-        // plugins: [
-        //   typescript({
-        //     tsconfig: 'build.tsconfig.json',
-        //   }),
-        // ],
+        plugins: [
+          getBabelOutputPlugin({
+            presets: ['@babel/preset-env'],
+            plugins: [
+              ['@babel/plugin-transform-runtime', { useESModules: true }],
+            ],
+          }),
+        ],
       },
     ],
-    // 插件配置
     plugins: [
-      // 可使用 `import {module} from './file'` 替换 `import {module} from './file/index.js`
       resolve(),
-      // 支持commonjs，包括第三方引入使用到commonjs语法
       commonjs(),
-      // typescript支持
       typescript({
-        tsconfig: 'build.tsconfig.json',
+        tsconfig: 'tsconfig.json',
+        tsconfigOverride: {
+          compilerOptions: {
+            target: 'ES6',
+            jsx: 'react',
+            declaration: true,
+          },
+          include: [
+            'src/components/index.ts',
+            'src/components/Ripple/index.tsx',
+            'src/components/Test/index.tsx',
+          ],
+        },
       }),
-      // 支持读取json文件
       json(),
-      // babel
-      babel({
-        babelHelpers: 'runtime',
-        exclude: '**/node_modules/**',
-        // presets: [
-        //   ['@babel/preset-env', { modules: false }],
-        //   [
-        //     '@babel/preset-react',
-        //     {
-        //       runtime: 'automatic',
-        //     },
-        //   ],
-        // ],
-      }),
+      babel({ babelHelpers: 'runtime' }),
     ],
     external: [
       'react',
@@ -97,9 +74,7 @@ export default [
     ],
   },
   {
-    // 入口
     input: entry,
-    // 打包信息
     output: [
       {
         dir: 'lib',
@@ -107,7 +82,12 @@ export default [
         preserveModules: true,
         plugins: [
           getBabelOutputPlugin({
-            presets: ['@babel/preset-env'],
+            presets: [
+              '@babel/preset-env',
+              // {
+              //   modules: 'commonjs',
+              // },
+            ],
             plugins: [
               ['@babel/plugin-transform-runtime', { useESModules: false }],
             ],
@@ -115,32 +95,25 @@ export default [
         ],
       },
     ],
-    // 插件配置
     plugins: [
-      // 可使用 `import {module} from './file'` 替换 `import {module} from './file/index.js`
       resolve(),
-      // 支持commonjs，包括第三方引入使用到commonjs语法
       commonjs(),
-      // typescript支持
       typescript({
-        tsconfig: 'build2.tsconfig.json',
+        tsconfig: 'tsconfig.json',
+        tsconfigOverride: {
+          compilerOptions: {
+            target: 'ES6',
+            jsx: 'react',
+          },
+          include: [
+            'src/components/index.ts',
+            'src/components/Ripple/index.tsx',
+            'src/components/Test/index.tsx',
+          ],
+        },
       }),
-      // 支持读取json文件
       json(),
-      // babel
-      babel({
-        babelHelpers: 'runtime',
-        exclude: '**/node_modules/**',
-        // presets: [
-        //   ['@babel/preset-env', { modules: false }],
-        //   [
-        //     '@babel/preset-react',
-        //     {
-        //       runtime: 'automatic',
-        //     },
-        //   ],
-        // ],
-      }),
+      babel({ babelHelpers: 'runtime' }),
     ],
     external: [
       'react',

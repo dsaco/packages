@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    // "lib": ["dom", "dom.iterable", "esnext"],
+    // "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    // "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    // "resolveJsonModule": true,
+    // "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
     "baseUrl": ".",
@@ -21,5 +21,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "es", "lib"]
 }

@@ -11,9 +11,9 @@
   "module": "es/index.js",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build:type": "npm run clean && tsc -p ./esm.tsconfig.json",
     "build:tsc": "npm run clean && tsc -p ./esm.tsconfig.json & tsc -p ./cjs.tsconfig.json",
-    "build:rollup": "rollup --config rollup.config.ts --configPlugin typescript",
+    "build:rollup": "npm run clean && rollup --config rollup.config.mjs",
+    "build:type": "npm run clean &&  tsc -p ./type.tsconfig.json",
     "build": "npm run build:rollup",
     "clean": "rimraf ./lib & rimraf ./es",
     "eject": "react-scripts eject",

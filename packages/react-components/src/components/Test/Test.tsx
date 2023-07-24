@@ -26,3 +26,5 @@ export const Test: React.FC<TestProps> = ({ color, ...rest }) => {
   console.log(rest.obj?.name ?? 'abc');
   return <StyledSpan color="red">{`hello ${color}`}</StyledSpan>;
 };
+
+export class Foo {}

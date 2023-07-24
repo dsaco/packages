@@ -4,5 +4,5 @@
 export { Ripple } from './Ripple';
 export type { RippleProps } from './Ripple';
 
-export { default as Test } from './Test';
+export { Test, Foo } from './Test';
 export type { TestProps } from './Test';

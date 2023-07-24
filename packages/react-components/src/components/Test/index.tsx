@@ -1,5 +1,3 @@
-import { Test } from './Test';
+export { Test, Foo } from './Test';
 
 export type { TestProps } from './Test';
-
-export default Test;
