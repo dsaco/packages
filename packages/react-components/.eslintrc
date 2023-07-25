@@ -18,6 +18,7 @@
   },
   "ignorePatterns": [
     "es",
+    "lib",
     "setupProxy.js",
     "*.config.js"
   ],

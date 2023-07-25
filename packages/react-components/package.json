@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.5",
+  "version": "3.1.7",
   "publishConfig": {
     "access": "public"
   },
@@ -11,11 +11,12 @@
   "module": "es/index.js",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build": "npm run build:rollup2",
+    "build": "npm run clean && tsc -p ./type.tsconfig.json && npm run build:babel:cjs && npm run build:babel:es",
+    "build:type": "tsc -p ./type.tsconfig.json",
+    "build:babel:cjs": "babel src/components --out-dir lib --extensions .ts,.tsx --config-file ./babel.cjs.json",
+    "build:babel:es": "babel src/components --out-dir es --extensions .ts,.tsx --config-file ./babel.esm.json",
     "build:rollup": "npm run clean && rollup --config rollup.config.mjs",
     "build:rollup2": "npm run clean &&  rollup --config rollup.config.js --bundleConfigAsCjs --environment INCLUDE_DEPS,BUILD:production",
-    "build:tsc": "npm run clean && tsc -p ./esm.tsconfig.json & tsc -p ./cjs.tsconfig.json",
-    "build:type": "npm run clean &&  tsc -p ./type.tsconfig.json",
     "clean": "rimraf ./lib & rimraf ./es",
     "eject": "react-scripts eject",
     "fix": "npm run fix:script & npm run fix:style",
@@ -41,7 +42,9 @@
     "styled-components": "^6.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.9",
     "@babel/core": "^7.22.9",
+    "@babel/plugin-external-helpers": "^7.22.5",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
@@ -94,12 +97,18 @@
     "zustand": "^4.3.8"
   },
   "typings": "es/index.d.ts",
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "Firefox ESR",
-    "not dead"
-  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "eslintConfig": {},
   "sideEffects": false
 }
