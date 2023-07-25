@@ -1,3 +1,3 @@
-export { Test, Foo } from './Test';
+export * from './Test';
 
 export type { TestProps } from './Test';

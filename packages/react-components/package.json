@@ -11,10 +11,11 @@
   "module": "es/index.js",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build:tsc": "npm run clean && tsc -p ./esm.tsconfig.json & tsc -p ./cjs.tsconfig.json",
+    "build": "npm run build:rollup2",
     "build:rollup": "npm run clean && rollup --config rollup.config.mjs",
+    "build:rollup2": "npm run clean &&  rollup --config rollup.config.js --bundleConfigAsCjs --environment INCLUDE_DEPS,BUILD:production",
+    "build:tsc": "npm run clean && tsc -p ./esm.tsconfig.json & tsc -p ./cjs.tsconfig.json",
     "build:type": "npm run clean &&  tsc -p ./type.tsconfig.json",
-    "build": "npm run build:rollup",
     "clean": "rimraf ./lib & rimraf ./es",
     "eject": "react-scripts eject",
     "fix": "npm run fix:script & npm run fix:style",
@@ -36,13 +37,16 @@
   "dependencies": {
     "@dsaco/utils": "^0.1.12",
     "@react-spring/web": "^9.7.2",
+    "lodash": "^4.17.21",
     "styled-components": "^6.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@babel/runtime": "^7.22.6",
+    "@babel/runtime-corejs3": "^7.22.6",
     "@craco/craco": "^7.1.0",
     "@dsaco/eslint-config": "^1.0.3",
     "@dsaco/utils": "workspace:^",
@@ -55,6 +59,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/lodash": "^4.14.195",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "craco-less": "^2.1.0-alpha.0",
@@ -89,18 +94,12 @@
     "zustand": "^4.3.8"
   },
   "typings": "es/index.d.ts",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ],
   "eslintConfig": {},
   "sideEffects": false
 }
