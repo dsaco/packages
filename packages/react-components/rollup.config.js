@@ -8,8 +8,13 @@ import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
  * @type {import('rollup').RollupOptions}
  */
 
+const input = [
+  './src/components/index.ts',
+  './src/components/Button/index.ts',
+];
+
 export default {
-  input: ['./src/component2/index.ts', './src/component2/Button/index.tsx'],
+  input,
   output: [
     {
       dir: 'es',
@@ -17,21 +22,8 @@ export default {
       preserveModules: true,
       plugins: [
         getBabelOutputPlugin({
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                // include
-              },
-            ],
-          ],
-          plugins: [
-            [
-              '@babel/plugin-transform-runtime',
-              { corejs: 3, useESModules: true },
-            ],
-          ],
-          //   babelHelpers: 'runtime',
+          presets: [['@babel/preset-env']],
+          plugins: [['@babel/plugin-transform-runtime']],
         }),
       ],
     },
@@ -39,30 +31,17 @@ export default {
       dir: 'lib',
       format: 'cjs',
       preserveModules: true,
-      // interop: 'auto',
       plugins: [
         getBabelOutputPlugin({
           presets: ['@babel/preset-env'],
-          plugins: [
-            [
-              '@babel/plugin-transform-runtime',
-              {
-                corejs: {
-                  version: 3,
-                  proposals: true,
-                },
-                useESModules: false,
-              },
-            ],
-          ],
-          //   babelHelpers: 'runtime',
+          plugins: [['@babel/plugin-transform-runtime']],
         }),
       ],
     },
   ],
   plugins: [
     resolve({
-      extensions: ['.js', '.jsx'],
+      extensions: ['.ts', '.tsx'],
     }),
     json(),
     commonjs(),
@@ -74,17 +53,9 @@ export default {
           jsx: 'react',
           // esModuleInterop: true,
         },
-        include: [
-          'src/component2/index.ts',
-          // 'src/component2/Ripple/index.tsx',
-          'src/component2/Test/index.tsx',
-        ],
+        include: input,
       },
     }),
-    // babel({
-    //   presets: ['@babel/preset-react'],
-    // }),
-    // babel({ babelHelpers: 'runtime' }),
   ],
   external: [
     'react',
@@ -92,7 +63,6 @@ export default {
     'styled-components',
     '@react-spring/web',
     '@dsaco/utils',
-    'lodash',
     /@babel\/runtime/,
   ],
 };
