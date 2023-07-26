@@ -9,15 +9,5 @@
     ],
     "@babel/preset-react"
   ],
-  "plugins": [
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "helpers": true,
-        "regenerator": false,
-        "useESModules": false,
-        "absoluteRuntime": false
-      }
-    ]
-  ]
+  "plugins": ["@babel/plugin-transform-runtime"]
 }
