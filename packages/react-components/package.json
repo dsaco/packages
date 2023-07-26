@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.8",
+  "version": "3.1.9",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "module": "es/index.js",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build": "npm run clean && npm run build:rollup",
+    "build": "npm run clean && npm run build:type && npm run build:rollup",
     "build:babel": "npm run clean && tsc -p ./type.tsconfig.json && npm run build:babel:cjs && npm run build:babel:es",
     "build:type": "tsc -p ./type.tsconfig.json",
     "build:babel:cjs": "babel src/components --out-dir lib --extensions .ts,.tsx --config-file ./babel.cjs.json",
