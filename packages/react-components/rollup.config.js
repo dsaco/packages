@@ -2,7 +2,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
-import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
+// import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
 
 /**
  * @type {import('rollup').RollupOptions}
@@ -10,7 +10,8 @@ import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
 
 const input = [
   './src/components/index.ts',
-  // './src/components/Button/index.ts',
+  './src/components/Button/index.ts',
+  './src/components/Ripple/index.tsx',
 ];
 const external = [
   'react',
@@ -28,12 +29,6 @@ export default [
       dir: 'es',
       format: 'es',
       preserveModules: true,
-      // plugins: [
-      //   getBabelOutputPlugin({
-      //     presets: [['@babel/preset-env']],
-      //     plugins: [['@babel/plugin-transform-runtime']],
-      //   }),
-      // ],
     },
     plugins: [
       resolve({
@@ -47,7 +42,6 @@ export default [
           compilerOptions: {
             target: 'ES5',
             jsx: 'react',
-            // esModuleInterop: true,
           },
           include: input,
         },
@@ -61,12 +55,6 @@ export default [
       dir: 'lib',
       format: 'cjs',
       preserveModules: true,
-      // plugins: [
-      //   getBabelOutputPlugin({
-      //     presets: ['@babel/preset-env'],
-      //     plugins: [['@babel/plugin-transform-runtime']],
-      //   }),
-      // ],
     },
     plugins: [
       resolve({
@@ -80,24 +68,13 @@ export default [
           compilerOptions: {
             target: 'ES5',
             jsx: 'react',
-            // esModuleInterop: true,
           },
           include: input,
         },
       }),
       // babel({
       //   babelHelpers: 'runtime',
-      //   presets: [
-      //     [
-      //       '@babel/preset-env',
-      //       {
-      //         targets: 'defaults',
-      //         // targets: {
-      //         //   esmodules: false,
-      //         // },
-      //       },
-      //     ],
-      //   ],
+      //   presets: ['@babel/preset-env'],
       //   plugins: ['@babel/plugin-transform-runtime'],
       // }),
     ],

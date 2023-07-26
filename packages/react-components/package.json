@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "publishConfig": {
     "access": "public"
   },
@@ -11,13 +11,12 @@
   "module": "es/index.js",
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build1": "npm run clean && tsc -p ./type.tsconfig.json && npm run build:babel:cjs && npm run build:babel:es",
-    "build": "npm run build:rollup2",
+    "build": "npm run clean && npm run build:rollup",
+    "build:babel": "npm run clean && tsc -p ./type.tsconfig.json && npm run build:babel:cjs && npm run build:babel:es",
     "build:type": "tsc -p ./type.tsconfig.json",
     "build:babel:cjs": "babel src/components --out-dir lib --extensions .ts,.tsx --config-file ./babel.cjs.json",
     "build:babel:es": "babel src/components --out-dir es --extensions .ts,.tsx --config-file ./babel.esm.json",
-    "build:rollup": "npm run clean && rollup --config rollup.config.mjs",
-    "build:rollup2": "npm run clean &&  rollup --config rollup.config.js --bundleConfigAsCjs",
+    "build:rollup": "rollup --config rollup.config.js --bundleConfigAsCjs",
     "clean": "rimraf ./lib & rimraf ./es",
     "eject": "react-scripts eject",
     "fix": "npm run fix:script & npm run fix:style",
