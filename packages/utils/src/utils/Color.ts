@@ -2,16 +2,16 @@
 const REG_MATCH_HEX = /^#[\da-f]{3,8}$/i;
 // rgb(255 0 0) rgba(255 0 0) rgb(255 0 0 / 50%) rgba(255 0 0 / 0.5)
 const REG_MATCH_RGB_SPACE =
-  /^rgba?\(\s*((\d+\.)?\d+)\s+((\d+\.)?\d+)\s+((\d+\.)?\d+)\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+  /^rgba?\(\s*((\d+\.)?\d+)(%)?\s+((\d+\.)?\d+)(%)?\s+((\d+\.)?\d+)(%)?\s*(\/\s*((\d*\.)?\d+)(%)?\s*)?\)$/;
 // rgb(255, 0, 0) rgba(255, 0, 0) rgb(255, 0, 0, 50%) rgba(255, 0, 0, 0.5)
 const REG_MATCH_RGB_COMMA =
-  /^rgba?\(\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*,\s*((\d+\.)?\d+)\s*(,\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+  /^rgba?\(\s*((\d+\.)?\d+)(%)?\s*,\s*((\d+\.)?\d+)(%)?\s*,\s*((\d+\.)?\d+)(%)?\s*(,\s*((\d*\.)?\d+)(%)?\s*)?\)$/;
 // hsl(0deg 100% 50%) hsla(0deg 100% 50%) hsl(0deg 100% 50% / 50%) hsla(0deg 100% 50% / 50%)
 const REG_MATCH_HSL_SPACE =
-  /^hsla?\(\s*((\d+\.)?\d+)deg\s*((\d+\.)?\d+)%\s*((\d+\.)?\d+)%\s*(\/\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+  /^hsla?\(\s*((\d+\.)?\d+)(deg)?\s*((\d+\.)?\d+)%\s*((\d+\.)?\d+)%\s*(\/\s*((\d*\.)?\d+)(%)?\s*)?\)$/;
 // hsl(0deg, 100%, 50%) hsla(0deg, 100%, 50%) hsl(0deg, 100%, 50%, 50%) hsla(0deg, 100%, 50%, 50%)
 const REG_MATCH_HSL_COMMA =
-  /^hsla?\(\s*((\d+\.)?\d+)deg\s*,\s*((\d+\.)?\d+)%\s*,\s*((\d+\.)?\d+)%\s*(,\s*((\d+\.)?\d+)(%)?\s*)?\)$/;
+  /^hsla?\(\s*((\d+\.)?\d+)(deg)?\s*,\s*((\d+\.)?\d+)%\s*,\s*((\d+\.)?\d+)%\s*(,\s*((\d*\.)?\d+)(%)?\s*)?\)$/;
 
 enum ColorType {
   Hex,
@@ -139,17 +139,30 @@ export const Color = (origin: string) => {
       (matches = origin.match(REG_MATCH_RGB_SPACE)) ||
       (matches = origin.match(REG_MATCH_RGB_COMMA))
     ) {
-      const R = clamp(Number(matches[1]), 0, 255);
-      const G = clamp(Number(matches[3]), 0, 255);
-      const B = clamp(Number(matches[5]), 0, 255);
+      // 是否命中R后的百分号
+      const matchPercent = matches[3];
+      if (matchPercent) {
+        if (!matches[6] || !matches[9]) {
+          throw new TypeError(`Invalid Rgb Color: ${origin}`);
+        }
+      } else {
+        if (matches[6] || matches[9]) {
+          throw new TypeError(`Invalid Rgb Color: ${origin}`);
+        }
+      }
+      const mulMatchPercent = matchPercent ? 2.55 : 1;
+
+      const R = clamp(Number(matches[1]) * mulMatchPercent, 0, 255);
+      const G = clamp(Number(matches[4]) * mulMatchPercent, 0, 255);
+      const B = clamp(Number(matches[7]) * mulMatchPercent, 0, 255);
       let A = 1;
       // 命中透明度
-      if (matches[7]) {
+      if (matches[10]) {
         // 命中百分号
-        if (matches[10]) {
-          A = Number(matches[8]) / 100;
+        if (matches[13]) {
+          A = Number(matches[11]) / 100;
         } else {
-          A = Number(matches[8]);
+          A = Number(matches[11]);
         }
       }
       object.type = ColorType.Rgb;
@@ -174,15 +187,15 @@ export const Color = (origin: string) => {
       (matches = origin.match(REG_MATCH_HSL_COMMA))
     ) {
       const H = Number(matches[1]);
-      const S = Number(matches[3]);
-      const L = Number(matches[5]);
+      const S = Number(matches[4]);
+      const L = Number(matches[6]);
       let A = 1;
-      if (matches[7]) {
+      if (matches[8]) {
         // 命中百分号
-        if (matches[10]) {
-          A = Number(matches[8]) / 100;
+        if (matches[11]) {
+          A = Number(matches[9]) / 100;
         } else {
-          A = Number(matches[8]);
+          A = Number(matches[9]);
         }
       }
       object.type = ColorType.Hsl;

@@ -94,4 +94,29 @@ describe('Color generate', () => {
     );
     expect(Color('hsl(300deg 100% 25.1%)').hex).toEqual('#800080');
   });
+  it('input css color', () => {
+    expect(Color('rgb(255,0,153)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(255, 0, 153)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(255, 0, 153.0)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(100%,0%,60%)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(100%, 0%, 60%)').rgb).toEqual('rgb(255 0 153)');
+    // expect(Color('rgb(100%, 0, 60%)')).toHaveErrorMessage('TypeError: Invalid Rgb Color: rgb(100%, 0, 60%)');
+    expect(Color('rgb(255 0 153)').rgb).toEqual('rgb(255 0 153)');
+
+    expect(Color('#f09f').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('#F09F').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('#ff0099ff').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('#FF0099FF').rgb).toEqual('rgb(255 0 153)');
+
+    expect(Color('rgb(255, 0, 153, 1)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(255, 0, 153, 100%)').rgb).toEqual('rgb(255 0 153)');
+
+    expect(Color('rgb(255 0 153 / 1)').rgb).toEqual('rgb(255 0 153)');
+    expect(Color('rgb(255 0 153 / 100%)').rgb).toEqual('rgb(255 0 153)');
+
+    expect(Color('rgb(255, 0, 153.4, 1)').rgb).toEqual('rgb(255 0 153)');
+    
+
+
+  })
 });
