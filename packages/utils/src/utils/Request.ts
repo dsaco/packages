@@ -5,6 +5,7 @@ import type {
   AxiosResponse,
   AxiosRequestConfig,
   InternalAxiosRequestConfig,
+  AxiosError,
 } from 'axios';
 
 export type TypeRequest = {
@@ -14,18 +15,32 @@ export type TypeRequest = {
   ) =>
     | InternalAxiosRequestConfig<any>
     | Promise<InternalAxiosRequestConfig<any>>;
-  onReqRejected?: (error: any) => any;
+  onReqRejected?: (error: AxiosError) => any;
   onRes?: (
     value: AxiosResponse<any, any>
   ) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
-  onResRejected?: (error: any) => any;
+  onResRejected?: (error: AxiosError) => any;
 };
 
 export class Request {
   #instance: AxiosInstance;
 
-  constructor(params: TypeRequest = {}) {
-    const { config, onReq, onReqRejected, onRes, onResRejected } = params;
+  constructor(
+    options: {
+      config?: CreateAxiosDefaults;
+      onReq?: (
+        value: InternalAxiosRequestConfig<any>
+      ) =>
+        | InternalAxiosRequestConfig<any>
+        | Promise<InternalAxiosRequestConfig<any>>;
+      onReqRejected?: (error: AxiosError) => any;
+      onRes?: (
+        value: AxiosResponse<any, any>
+      ) => AxiosResponse<any, any> | Promise<AxiosResponse<any, any>>;
+      onResRejected?: (error: AxiosError) => any;
+    } = {}
+  ) {
+    const { config, onReq, onReqRejected, onRes, onResRejected } = options;
     this.#instance = axios.create(config);
 
     this.#instance.interceptors.request.use(onReq, onReqRejected);
