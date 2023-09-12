@@ -13,13 +13,13 @@ const REG_MATCH_HSL_SPACE =
 const REG_MATCH_HSL_COMMA =
   /^hsla?\(\s*((\d+\.)?\d+)(deg)?\s*,\s*((\d+\.)?\d+)%\s*,\s*((\d+\.)?\d+)%\s*(,\s*((\d*\.)?\d+)(%)?\s*)?\)$/;
 
-enum ColorType {
-  Hex,
-  Rgb,
-  Hsl,
+export enum ColorType {
+  hex = 'hex',
+  rgb = 'rgb',
+  hsl = 'hsl',
 }
 
-export type TypeColor = {
+type TypeColor = {
   origin: string;
   type?: ColorType;
 
@@ -43,14 +43,41 @@ export type TypeColor = {
   darken: (coefficient: number) => string;
   alpha: (coefficient: number) => string;
 };
-function darken(this: TypeColor, coefficient: number) {
+
+export interface IColor {
+  origin: string;
+
+  type: ColorType;
+
+  hex: string;
+  hexa: string;
+  rgb: string;
+  rgba: string;
+  hsl: string;
+  hsla: string;
+
+  R: number;
+  G: number;
+  B: number;
+
+  H: number;
+  S: number;
+  L: number;
+
+  A: number;
+
+  darken: (coefficient: number) => string;
+  alpha: (coefficient: number) => string;
+}
+
+function darken(this: IColor, coefficient: number) {
   coefficient = clamp(coefficient, -1, 1);
 
-  if (this.type === ColorType.Hsl) {
-    const l = (this.L as number) * (1 - coefficient);
+  if (this.type === ColorType.hsl) {
+    const l = this.L * (1 - coefficient);
 
-    const _H = Math.round((this.H as number) % 360);
-    const _S = clamp(Math.round(this.S as number), 0, 100);
+    const _H = Math.round(this.H % 360);
+    const _S = clamp(Math.round(this.S), 0, 100);
     const _L = clamp(Math.round(l), 0, 100);
     if (this.A === 1) {
       return `hsl(${_H}deg ${_S}% ${_L})%`;
@@ -62,21 +89,9 @@ function darken(this: TypeColor, coefficient: number) {
       )}%)`;
     }
   } else {
-    const red = clamp(
-      Math.floor((this.R as number) * (1 - coefficient)),
-      0,
-      255
-    );
-    const green = clamp(
-      Math.floor((this.G as number) * (1 - coefficient)),
-      0,
-      255
-    );
-    const blue = clamp(
-      Math.floor((this.B as number) * (1 - coefficient)),
-      0,
-      255
-    );
+    const red = clamp(Math.floor(this.R * (1 - coefficient)), 0, 255);
+    const green = clamp(Math.floor(this.G * (1 - coefficient)), 0, 255);
+    const blue = clamp(Math.floor(this.B * (1 - coefficient)), 0, 255);
 
     if (this.A === 1) {
       return `rgb(${red} ${green} ${blue})`;
@@ -85,7 +100,7 @@ function darken(this: TypeColor, coefficient: number) {
     }
   }
 }
-function alpha(this: TypeColor, coefficient: number) {
+function alpha(this: IColor, coefficient: number) {
   coefficient = clamp(coefficient);
   return `rgb(${this.R} ${this.G} ${this.B} / ${coefficient * 100}%)`;
 }
@@ -111,7 +126,7 @@ export const Color = (origin: string) => {
       )}${origin[3].repeat(2)}`;
       object.hexa = `${object.hex}ff`;
 
-      object.type = ColorType.Hex;
+      object.type = ColorType.hex;
     } else if (originLen === 5) {
       object.hex = `#${origin[1].repeat(2)}${origin[2].repeat(
         2
@@ -119,18 +134,18 @@ export const Color = (origin: string) => {
       object.hexa = `${object.hex}${origin[4].repeat(2)}`;
       object.A = parseInt(origin[4].repeat(2), 16) / 255;
 
-      object.type = ColorType.Hex;
+      object.type = ColorType.hex;
     } else if (originLen === 7) {
       object.hex = origin;
       object.hexa = `${origin}ff`;
 
-      object.type = ColorType.Hex;
+      object.type = ColorType.hex;
     } else if (originLen === 9) {
       object.hex = origin.slice(0, 7);
       object.hexa = origin;
       object.A = parseInt(origin.slice(7), 16) / 255;
 
-      object.type = ColorType.Hex;
+      object.type = ColorType.hex;
     } else {
       throw new TypeError(`Invalid Hex Color: ${origin}`);
     }
@@ -165,7 +180,7 @@ export const Color = (origin: string) => {
           A = Number(matches[11]);
         }
       }
-      object.type = ColorType.Rgb;
+      object.type = ColorType.rgb;
       object.R = R;
       object.G = G;
       object.B = B;
@@ -198,7 +213,7 @@ export const Color = (origin: string) => {
           A = Number(matches[9]);
         }
       }
-      object.type = ColorType.Hsl;
+      object.type = ColorType.hsl;
       object.H = H;
       object.S = S;
       object.L = L;
@@ -218,13 +233,13 @@ export const Color = (origin: string) => {
     throw new TypeError(`Invalid Color: ${origin}`);
   }
 
-  return new Proxy(object, {
+  return new Proxy(object as IColor, {
     get(target, propKey, receiver) {
       if (Reflect.has(target, propKey)) {
         return Reflect.get(target, propKey, receiver);
       } else {
         if (propKey === 'hex' || propKey === 'hexa') {
-          if (target.type === ColorType.Rgb) {
+          if (target.type === ColorType.rgb) {
             const [R, G, B] = rgb2hex(
               target.R as number,
               target.G as number,
@@ -239,7 +254,7 @@ export const Color = (origin: string) => {
             Reflect.set(target, 'hexa', hexa, receiver);
 
             return Reflect.get(target, propKey, receiver);
-          } else if (target.type === ColorType.Hsl) {
+          } else if (target.type === ColorType.hsl) {
             const [R, G, B] = hsl2rgb(
               target.H as number,
               (target.S as number) / 100,
@@ -266,7 +281,7 @@ export const Color = (origin: string) => {
           propKey === 'rgba' ||
           ['R', 'G', 'B'].includes(propKey as string)
         ) {
-          if (target.type === ColorType.Hex) {
+          if (target.type === ColorType.hex) {
             const [R, G, B] = hex2rgb(target.hex as string);
 
             const _R = Math.round(R);
@@ -281,7 +296,7 @@ export const Color = (origin: string) => {
             target.rgba = `rgb(${_R} ${_G} ${_B} / ${_A}%)`;
 
             return Reflect.get(target, propKey, receiver);
-          } else if (target.type === ColorType.Hsl) {
+          } else if (target.type === ColorType.hsl) {
             const [R, G, B] = hsl2rgb(
               target.H as number,
               (target.S as number) / 100,
@@ -300,7 +315,7 @@ export const Color = (origin: string) => {
         }
 
         if (propKey === 'hsl' || propKey === 'hsla') {
-          if (target.type === ColorType.Rgb) {
+          if (target.type === ColorType.rgb) {
             const [H, S, L] = rgb2hsl(
               target.R as number,
               target.G as number,
@@ -319,7 +334,7 @@ export const Color = (origin: string) => {
             target.hsla = `hsl(${_H}deg ${_S}% ${_L}% / ${_A}%)`;
 
             return Reflect.get(target, propKey, receiver);
-          } else if (target.type === ColorType.Hex) {
+          } else if (target.type === ColorType.hex) {
             const [R, G, B] = hex2rgb(target.hex as string);
             const [H, S, L] = rgb2hsl(R, G, B);
 
@@ -375,16 +390,16 @@ const rgb2hsl = (r: number, g: number, b: number) => {
     S = L > 0.5 ? delta / (2 - max - min) : delta / (max + min);
 
     if (r === max) {
-      H = (60 * (g - b)) / delta;
+      if (g >= b) {
+        H = (60 * (g - b)) / delta;
+      } else {
+        H = (60 * (g - b)) / delta + 360;
+      }
     } else if (g === max) {
       H = (60 * (b - r)) / delta + 120;
     } else if (b === max) {
       H = (60 * (r - g)) / delta + 240;
     }
-    if (H < 0) {
-      H += 360;
-    }
-    H %= 360;
   }
   return [H, S * 100, L * 100];
 };

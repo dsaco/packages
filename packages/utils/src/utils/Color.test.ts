@@ -116,6 +116,9 @@ describe('Color generate', () => {
 
     expect(Color('rgb(255, 0, 153.4, 1)').rgb).toEqual('rgb(255 0 153)');
     
+    
+    // expect(Color('hsl(270,60%,70%)').rgb).toEqual('rgb(178 133 224)');
+  
 
 
   })
