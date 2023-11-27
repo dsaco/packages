@@ -17,11 +17,15 @@
     "dependencies": {
       "react-router-dom": "^6.12.1",
       "tailwindcss": "^3.3.5",
+      "web-vitals": "^2.1.4",
       "zustand": "^4.3.8"
     },
     "devDependencies": {
       "@craco/craco": "^7.1.0",
       "@dsaco/eslint-config": "^1.0.3",
+      "@testing-library/jest-dom": "^5.16.5",
+      "@testing-library/react": "^13.4.0",
+      "@testing-library/user-event": "^13.5.0",
       "@typescript-eslint/eslint-plugin": "^5.62.0",
       "@typescript-eslint/parser": "^5.62.0",
       "craco-less": "^3.0.1",
@@ -33,6 +37,7 @@
       "postcss-less": "^6.0.0",
       "postcss-scss": "^4.0.9",
       "prettier": "3.1.0",
+      "react-scripts": "5.0.1",
       "sass": "^1.69.5",
       "source-map-explorer": "^2.5.3",
       "stylelint": "^15.11.0",
