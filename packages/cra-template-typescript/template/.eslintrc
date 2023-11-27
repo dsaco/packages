@@ -16,20 +16,13 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": [
-    "setupProxy.js",
-    "*.config.js"
-  ],
+  "ignorePatterns": ["setupProxy.js", "*.config.js"],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "prettier",
-    "react",
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "@dsaco"
   ],
   "rules": {

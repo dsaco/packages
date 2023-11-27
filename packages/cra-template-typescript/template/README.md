@@ -66,6 +66,22 @@ npm run fix:style
 npm run fix
 ```
 
+##### 代码格式化
+
+```
+npm run prettier
+```
+
+##### 预提交格式化
+
+```
+npm run precommit
+```
+
+```
+npm run analyze
+```
+
 ##### 分析项目构建结果
 
 ```
