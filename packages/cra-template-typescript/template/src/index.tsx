@@ -10,7 +10,9 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root') as Element);
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <React.Suspense fallback={<div>...</div>}>
+      <RouterProvider router={router} />
+    </React.Suspense>
   </React.StrictMode>
 );
 
