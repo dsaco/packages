@@ -1,42 +1,26 @@
-import { useCallback } from 'react';
-import type { SetStateAction, Dispatch } from 'react';
-import { useTransition, animated, easings } from '@react-spring/web';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import styled from '@emotion/styled';
+import { animated, useSpring } from '@react-spring/web';
 
-import { useMask } from './Mask';
 import { IconClose } from '../common/icons';
+import { Mask } from './Mask';
+import type { MaskProps } from './Mask';
 
-type ModalProps = {
-  children?: React.ReactNode;
-  maskClosable?: boolean;
+export type ModalProps = {
   title?: string;
-};
+  width?: number;
+} & MaskProps;
 
-type TypeUseModalParam = {
-  bgColor?: string;
-  duration?: number;
-};
-
-type TypeUseModalReturn = {
-  Modal: React.FC<ModalProps>;
-  set: Dispatch<SetStateAction<boolean>>;
-  visible: boolean;
-};
-
-type TypeUseModal = {
-  (props?: TypeUseModalParam): TypeUseModalReturn;
-};
-
-type TypeModal = React.FC<ModalProps>;
-
-const StyledAnimatedDialog = styled(animated.div)`
+const StyledAnimatedDialog = styled(animated.div)<{ width?: number }>`
   display: flex;
   flex-direction: column;
-  width: 520px;
+  width: ${({ width }) => width || 520}px;
   max-width: 100%;
   max-height: calc(100% - 64px);
   margin: 32px;
   overflow: hidden;
+  font-size: 16px;
+  color: rgb(0 0 0 / 88%);
   background-color: #fff;
   border-radius: 8px;
   box-shadow: rgb(0 0 0 / 20%) 0 11px 15px -7px,
@@ -73,49 +57,46 @@ const StyledDialogClose = styled.div`
     box-shadow: 0 3px 3px #ccc;
   }
 `;
-const StyledDialogContent = styled.header`
+
+const StyledDialogContent = styled.div`
   flex: 1;
   padding: 16px;
   overflow-y: auto;
 `;
 
-export const useModal: TypeUseModal = (props = {}) => {
-  const { bgColor, duration = 300 } = props;
-  const { Mask, visible, set } = useMask({ bgColor, duration });
-
-  const transitions = useTransition(visible, {
-    from: { opacity: 0, transform: 'scale(0)' },
-    enter: { opacity: 1, transform: 'scale(1)' },
-    leave: { opacity: 0, transform: 'scale(0)' },
+export const Modal: React.FC<ModalProps> = ({
+  children,
+  title,
+  visible,
+  width,
+  ...props
+}) => {
+  const [{ scale }, transApi] = useSpring(() => ({
+    scale: 0,
     config: {
-      duration,
-      easing: easings.easeOutQuad,
+      duration: 200,
     },
-  });
+  }));
 
-  const Modal: TypeModal = ({ children, maskClosable, title = 'Untitled' }) => {
-    const onClose = useCallback(() => {
-      set(false);
-    }, []);
+  useEffect(() => {
+    if (visible) {
+      transApi({ scale: 1 });
+    } else {
+      transApi({ scale: 0 });
+    }
+  }, [visible]);
 
-    return (
-      <Mask maskClosable={maskClosable}>
-        {transitions((style, show) => {
-          return show ? (
-            <StyledAnimatedDialog style={style}>
-              <StyledDialogHeader>
-                <span>{title}</span>
-                <StyledDialogClose onClick={onClose}>
-                  <IconClose style={{ fontSize: 20 }} />
-                </StyledDialogClose>
-              </StyledDialogHeader>
-              <StyledDialogContent>{children}</StyledDialogContent>
-            </StyledAnimatedDialog>
-          ) : null;
-        })}
-      </Mask>
-    );
-  };
-
-  return { Modal, visible, set };
+  return (
+    <Mask visible={visible} {...props}>
+      <StyledAnimatedDialog style={{ scale }} width={width}>
+        <StyledDialogHeader>
+          <span>{title}</span>
+          <StyledDialogClose onClick={props.onCancel}>
+            <IconClose style={{ fontSize: 20 }} />
+          </StyledDialogClose>
+        </StyledDialogHeader>
+        <StyledDialogContent>{children}</StyledDialogContent>
+      </StyledAnimatedDialog>
+    </Mask>
+  );
 };

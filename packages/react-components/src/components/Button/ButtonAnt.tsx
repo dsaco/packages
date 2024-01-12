@@ -1,16 +1,124 @@
 import React, { useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { Color, IColor } from '@dsaco/utils';
 
-import type { ButtonProps } from '.';
-// import { Wave } from '../Wave';
+import { Wave } from '../Wave';
 
-export type ButtonAntProps = ButtonProps & {
-  loading?: boolean;
-  shape?: 'default' | 'circle' | 'round';
-  size?: 'large' | 'middle' | 'small';
+export type ButtonAntProps = React.HTMLProps<HTMLButtonElement> & {
+  as?: React.ElementType<any>;
+  // loading?: boolean;
+  // shape?: 'default' | 'circle' | 'round';
+  // size?: 'large' | 'middle' | 'small';
+  type?: 'outline' | 'filled' | 'dashed' | 'text' | 'link';
+  ghost?: boolean;
+  color?: 'primary' | 'danger' | string;
+  round?: boolean;
 };
 
-const StyledButtonAnt = styled.button`
+type TypeStyledButtonAntProps = {
+  $type?: 'outline' | 'filled' | 'dashed' | 'text' | 'link';
+  $ghost?: boolean;
+  $color: IColor;
+  $round?: boolean;
+  disabled?: boolean;
+};
+const getCss = ({ $ghost, $type, $color }: TypeStyledButtonAntProps) => {
+  const themeColor = $color.rgb;
+  const themeLight = $color.alpha(0.8);
+  const themeDeep = $color.darken(0.1);
+
+  let color;
+  let borderStyle = 'solid';
+  let borderColor = 'transparent';
+  let bg = 'transparent';
+
+  let hoverColor = '';
+  let hoverBorderColor = '';
+  let hoverBg = '';
+
+  let activeColor = '';
+  let activeBorderColor = '';
+  let activeBg = '';
+
+  switch ($type) {
+    case 'outline':
+      color = themeColor;
+      borderColor = themeColor;
+      bg = $ghost ? 'transparent' : '#fff';
+      hoverColor = themeLight;
+      hoverBorderColor = themeLight;
+      activeColor = themeDeep;
+      activeBorderColor = themeDeep;
+      break;
+    case 'filled':
+      color = '#fff';
+      borderColor = themeColor;
+      bg = themeColor;
+      hoverBg = themeLight;
+      hoverBorderColor = themeLight;
+      activeBg = themeDeep;
+      activeBorderColor = themeDeep;
+      break;
+    case 'link':
+      color = themeColor;
+      hoverColor = themeLight;
+      activeColor = themeDeep;
+      break;
+    case 'text':
+      color = themeColor;
+      hoverColor = themeLight;
+      hoverBg = $color.alpha(0.1);
+      activeColor = themeDeep;
+      break;
+    case 'dashed':
+      color = themeColor;
+      borderColor = themeColor;
+      borderStyle = 'dashed';
+      bg = $ghost ? 'transparent' : '#fff';
+      hoverColor = themeLight;
+      hoverBorderColor = themeLight;
+      activeColor = themeDeep;
+      activeBorderColor = themeDeep;
+      break;
+    default:
+      color = $ghost ? '#fff' : 'rgb(0 0 0 / 88%)';
+      borderColor = $ghost ? '#fff' : '#d9d9d9';
+      bg = $ghost ? 'transparent' : '#fff';
+      hoverColor = themeLight;
+      hoverBorderColor = themeLight;
+      activeColor = themeDeep;
+      activeBorderColor = themeDeep;
+      break;
+  }
+
+  return `
+    color: ${color};
+    border: 1px ${borderStyle} ${borderColor};
+    background-color: ${bg};
+    &:hover:not(:disabled) {
+      ${hoverColor ? `color: ${hoverColor};` : ''}
+      ${hoverBorderColor ? `border-color: ${hoverBorderColor};` : ''}
+      ${hoverBg ? `background-color: ${hoverBg}` : ''}
+    }
+    &:active:not(:disabled) {
+      ${activeColor ? `color: ${activeColor};` : ''}
+      ${activeBorderColor ? `border-color: ${activeBorderColor};` : ''}
+      ${activeBg ? `background-color: ${activeBg}` : ''}
+    }
+    &:disabled {
+      cursor: not-allowed; 
+      color: rgb(0 0 0 / 25%);
+      border-color: ${
+        borderColor === 'transparent' ? 'transparent' : '#d9d9d9'
+      };
+      background-color: ${
+        bg === 'transparent' ? 'transparent' : 'rgb(0 0 0 / 4%)'
+      };
+    }
+  `;
+};
+
+const StyledButtonAnt = styled.button<TypeStyledButtonAntProps>`
   position: relative;
   box-sizing: border-box;
   display: inline-block;
@@ -19,44 +127,46 @@ const StyledButtonAnt = styled.button`
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5714;
-  color: rgb(0 0 0 / 88%);
   text-align: center;
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
   user-select: none;
-  background-color: transparent;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid transparent;
-  border-color: #d9d9d9;
-  border-radius: 6px;
+  border-radius: ${({ $round }) => ($round ? '999px' : '6px')};
   outline: none;
-  box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
   transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  ${getCss}
 `;
 
-const StyledWave = styled.div`
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-  box-shadow: 0 0 0 0 #1677ff;
-  opacity: 0.2;
-  transition: box-shadow 1s cubic-bezier(0.08, 0.82, 0.17, 1),
-    opacity 2s cubic-bezier(0.08, 0.82, 0.17, 1);
-
-  &:hover {
-    box-shadow: 0 0 0 16px #1677ff;
-    opacity: 0;
-  }
-`;
-
-export const ButtonAnt: React.FC<ButtonAntProps> = ({ children }) => {
+export const ButtonAnt: React.FC<ButtonAntProps> = ({
+  type,
+  color = 'primary',
+  ghost,
+  round,
+  children,
+  ...restProps
+}) => {
+  const $color = useMemo(() => {
+    if (color === 'primary') {
+      return Color('#1677ff');
+    }
+    if (color === 'danger') {
+      return Color('#ff4d4f');
+    }
+    return Color(color);
+  }, [color]);
   return (
-    <StyledButtonAnt>
+    <StyledButtonAnt
+      $type={type}
+      $ghost={ghost}
+      $color={$color}
+      $round={round}
+      {...restProps}
+    >
       {children}
-      {/* <Wave /> */}
-      {/* <StyledWave></StyledWave> */}
+      {type !== 'link' && type !== 'text' && (
+        <Wave color={$color.hex} borderRadius={round ? 999 : 6} />
+      )}
     </StyledButtonAnt>
   );
 };

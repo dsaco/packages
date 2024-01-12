@@ -7,5 +7,5 @@ export { ButtonAnt } from './ButtonAnt';
 export type { ButtonAntProps } from './ButtonAnt';
 
 export type ButtonProps = {
-  type?: 'submit' | 'reset' | 'button' | undefined;
-} & Omit<React.HTMLProps<HTMLButtonElement>, 'type'>;
+  type?: 'submit' | 'reset' | 'button';
+} & React.HTMLProps<HTMLButtonElement>;

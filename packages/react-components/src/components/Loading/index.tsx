@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
+export { LoadingCube } from './LoadingCube';
 
 type CircularProgressProps = {
   size?: number;

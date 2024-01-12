@@ -1,22 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { useTransition, animated } from '@react-spring/web';
+import { useTransition, animated, easings } from '@react-spring/web';
 
 type WaveProps = {
   duration?: number;
   color?: string;
+  borderRadius?: number;
 };
 
 export const Wave: React.FC<WaveProps> = ({
   color = '#1677ff',
-  duration = 200,
+  duration = 400,
+  borderRadius = 6,
 }) => {
   const id = useRef(0);
   const [waves, setWaves] = useState<string[]>([]);
   const transitions = useTransition(waves, {
-    from: { boxShadow: '0 0 0 0px #1677ff', opacity: 0.2 },
-    enter: { boxShadow: '0 0 0 6px #1677ff', opacity: 0.16 },
+    from: { boxShadow: `0 0 0 0px ${color}`, opacity: 0.5 },
+    enter: { boxShadow: `0 0 0 8px ${color}`, opacity: 0.5 },
     leave: { opacity: 0 },
-    config: { duration },
+    config: { duration, easing: easings.easeOutSine },
   });
 
   const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
@@ -26,7 +28,7 @@ export const Wave: React.FC<WaveProps> = ({
   const onRemove = () => {
     setTimeout(() => {
       setWaves((prevWaves) => prevWaves.slice(1));
-    }, duration * 2);
+    }, 0);
   };
   return (
     <div
@@ -44,7 +46,7 @@ export const Wave: React.FC<WaveProps> = ({
             ...style,
             position: 'absolute',
             inset: 0,
-            borderRadius: 6,
+            borderRadius,
           }}
         ></animated.div>
       ))}

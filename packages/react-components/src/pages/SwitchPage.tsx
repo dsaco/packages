@@ -9,14 +9,14 @@ export default function SwitchPage() {
 
   return (
     <div className="h-screen p-5">
-      <div className="flex items-center border-zinc-500 border-b py-2">
+      {/* <div className="flex items-center border-zinc-500 border-b py-2">
         <span className="mr-4">Disabled</span>
         <SwitchAnt checked={disabled} onChange={setDisabled} />
       </div>
       <div className="flex items-center border-zinc-500 border-b py-2">
         <span className="mr-4">Loading</span>
         <SwitchAnt checked={loading} onChange={setLoading} />
-      </div>
+      </div> */}
       <div className="flex items-center border-zinc-500 border-b py-2">
         <SwitchAnt
           loading={loading}
@@ -25,7 +25,7 @@ export default function SwitchPage() {
           onChange={setValue}
         />
       </div>
-      <div className="flex items-center border-zinc-500 border-b py-2">
+      {/* <div className="flex items-center border-zinc-500 border-b py-2">
         <SwitchAnt
           checked={value}
           onChange={setValue}
@@ -84,11 +84,12 @@ export default function SwitchPage() {
           height={66}
           padding={6}
           checkedChildren="开启的"
+          activeColor="#f00"
           unCheckedChildren={
             <span style={{ fontSize: 20, color: 'red' }}>关闭Children</span>
           }
         />
-      </div>
+      </div> */}
     </div>
   );
 }

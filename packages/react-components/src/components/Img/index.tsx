@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 
-import { useMask } from '../Modal';
+import { useMask } from '../Modal/useMask';
 
 type ImgProps = {
   src: string;
@@ -155,7 +155,7 @@ const Img: React.FC<ImgProps> = ({
     return (
       <>
         <img ref={imgRef} onClick={onPreview} src={src} {...restProps} />
-        <Mask maskClosable>
+        <Mask closable>
           {imgTransitions((style, show) =>
             show ? (
               <animated.img

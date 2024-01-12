@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { SwitchProps } from '.';
-import { Color, TypeColor } from '../utils/color';
+import { Color, IColor } from '@dsaco/utils';
 
 import { IconLoading } from '../common/icons';
 
@@ -22,8 +22,8 @@ type TypeStyledSwitchAntProps = {
   $width?: number;
   $height: number;
   $padding: number;
-  $activeColor: TypeColor;
-  $inactiveColor: TypeColor;
+  $activeColor: IColor;
+  $inactiveColor: IColor;
 };
 
 const StyledSwitchInner = styled.div<TypeStyledSwitchAntProps>`
@@ -77,13 +77,13 @@ const StyledSwitchInnerUnchecked = styled(StyledSwitchInnerCheckExtend)`
 
 const StyledSwitchAntHandle = styled.div<TypeStyledSwitchAntProps>`
   position: absolute;
-  top: ${({ $padding }) => $padding}px;
   inset-inline-start: ${({ $checked, $height, $padding }) =>
     $checked ? `calc(100% - ${$height - $padding}px)` : `${$padding}px`};
   ${({ $height, $padding }) => `
     width: ${$height - $padding * 2}px;
     height: ${$height - $padding * 2}px;
   `}
+  top: ${({ $padding }) => $padding}px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -91,6 +91,8 @@ const StyledSwitchAntHandle = styled.div<TypeStyledSwitchAntProps>`
 
   &::before {
     position: absolute;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     top: 0;
     bottom: 0;
     content: '';
@@ -98,8 +100,6 @@ const StyledSwitchAntHandle = styled.div<TypeStyledSwitchAntProps>`
     border-radius: ${({ $height }) => $height}px;
     box-shadow: 0 2px 4px 0 rgb(0 35 11 / 20%);
     transition: all 0.2s ease-in-out;
-    inset-inline-end: 0;
-    inset-inline-start: 0;
   }
 `;
 

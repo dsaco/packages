@@ -17,6 +17,8 @@ export default function Home() {
       <Link to="/switch">switch</Link>
       <br />
       <Link to="/button">button</Link>
+      <br />
+      <Link to="/loading">loading</Link>
     </div>
   );
 }

@@ -1,87 +1,113 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import type { MouseEventHandler, SetStateAction, Dispatch } from 'react';
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
-import { useTransition, animated } from '@react-spring/web';
+import styled from '@emotion/styled';
+import { animated, useSpring, useSpringRef } from '@react-spring/web';
 
-type MaskProps = {
+export type MaskProps = {
   children?: React.ReactNode;
+  visible?: boolean;
+  onCancel?: () => void;
+  destroyOnClose?: boolean;
   maskClosable?: boolean;
-};
-type TypeMask = React.FC<MaskProps>;
-
-type TypeUseMaskReturn = {
-  Mask: React.FC<MaskProps>;
-  set: Dispatch<SetStateAction<boolean>>;
-  visible: boolean;
-};
-type TypeUseMaskParam = {
-  bgColor?: string;
+  maskColor?: string;
+  maskBlur?: number;
   duration?: number;
-};
-type TypeUseMask = {
-  (props?: TypeUseMaskParam): TypeUseMaskReturn;
-};
+  as?: React.ElementType<any>;
+} & React.HTMLProps<HTMLDivElement>;
 
-const targetNode = document.createElement('div');
+const container = document.createElement('div');
 
-export const useMask: TypeUseMask = (props = {}) => {
-  const { bgColor = 'rgba(0, 0, 0, 0.3)', duration } = props;
-  const [visible, set] = useState(false);
-  const target = useRef(targetNode);
+const AnimatedMask = animated(styled.div<{ maskColor: string; blur?: number }>`
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ maskColor }) => maskColor};
+  ${({ blur }) => (blur ? `backdrop-filter: blur(${blur}px);` : '')}
+`);
 
-  const transitions = useTransition(visible, {
-    from: { backgroundColor: `rgba(0, 0, 0, 0)`, backdropFilter: 'blur(0px)' },
-    enter: { backgroundColor: bgColor, backdropFilter: 'blur(2px)' },
-    leave: { backgroundColor: `rgba(0, 0, 0, 0)`, backdropFilter: 'blur(0px)' },
-    config: {
-      duration,
-    },
-  });
-
+export const Mask: React.FC<MaskProps> = ({
+  children,
+  maskClosable,
+  maskColor = 'rgb(0 0 0 / 45%)',
+  maskBlur,
+  visible,
+  onCancel,
+  destroyOnClose,
+  duration = 300,
+  ...props
+}) => {
+  const [_visible, _setVisible] = useState(visible);
   useEffect(() => {
-    if (visible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.removeProperty('overflow');
-    }
-  }, [visible]);
-
-  useEffect(() => {
-    if (!document.body.contains(targetNode)) {
-      document.body.appendChild(target.current);
+    if (!document.body.contains(container)) {
+      document.body.appendChild(container);
     }
   }, []);
 
-  const _Mask: TypeMask = ({ children, maskClosable = false }) => {
-    const mask = useRef(null);
-    const onMaskClick: MouseEventHandler<HTMLDivElement> = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      maskClosable && e.target === mask.current && set(false);
-    };
-    return createPortal(
-      transitions((style, show) => {
-        return show ? (
-          <animated.div
-            ref={mask}
-            style={{
-              ...style,
-              position: 'fixed',
-              inset: 0,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onClick={onMaskClick}
-          >
-            {children}
-          </animated.div>
-        ) : null;
-      }),
-      target.current
-    );
-  };
-  const Mask = memo(_Mask);
+  useEffect(() => {
+    _setVisible(visible);
+  }, [visible]);
 
-  return { Mask, set, visible };
+  const maskDiv = useRef(null);
+  const onMaskClick: MouseEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      if (maskClosable && maskDiv.current === e.target) {
+        e.stopPropagation();
+        e.preventDefault();
+        onCancel?.();
+        _setVisible(false);
+      }
+    },
+    [maskClosable]
+  );
+
+  const transApi = useSpringRef();
+  const spring = useSpring({
+    ref: transApi,
+    from: { opacity: 0, display: 'none' },
+    to: [{ opacity: 1, display: 'flex' }],
+  });
+
+  useEffect(() => {
+    if (_visible) {
+      transApi.start(() => {
+        return [
+          {
+            opacity: 1,
+            display: 'flex',
+            config: { duration },
+          },
+        ];
+      });
+    } else {
+      transApi.start(() => {
+        return [
+          { opacity: 0, config: { duration } },
+          { display: 'none', delay: duration },
+        ];
+      });
+    }
+  }, [_visible]);
+
+  return createPortal(
+    <AnimatedMask
+      {...props}
+      ref={maskDiv}
+      style={spring}
+      onClick={onMaskClick}
+      maskColor={maskColor}
+      blur={maskBlur}
+    >
+      {destroyOnClose ? visible && children : children}
+    </AnimatedMask>,
+    container
+  );
 };

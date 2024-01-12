@@ -9,3 +9,7 @@
 ::after {
   box-sizing: border-box;
 }
+
+:root {
+  /* --ds-button-size-middle: 40px; */
+}

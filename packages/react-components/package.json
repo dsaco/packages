@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.11",
+  "version": "3.1.24",
   "publishConfig": {
     "access": "public"
   },
@@ -36,10 +36,10 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@dsaco/utils": "^0.1.12",
-    "@react-spring/web": "^9.7.2",
-    "lodash": "^4.17.21",
-    "styled-components": "^6.0.2"
+    "@dsaco/utils": "^0.1.14",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@react-spring/web": "^9.7.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.9",
@@ -52,6 +52,8 @@
     "@babel/runtime-corejs3": "^7.22.6",
     "@craco/craco": "^7.1.0",
     "@dsaco/eslint-config": "^1.0.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@react-spring/web": "^9.7.2",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.3",
@@ -71,6 +73,7 @@
     "http-proxy-middleware": "^2.0.6",
     "less": "^4.1.3",
     "less-loader": "^11.1.3",
+    "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
     "postcss-less": "^6.0.0",
     "postcss-scss": "^4.0.6",

@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 import { Ripple } from '../Ripple';
 
 import type { ButtonProps } from '.';
-import { Color } from '@dsaco/utils';
-import type { TypeColor } from '@dsaco/utils';
+import { Color, IColor } from '@dsaco/utils';
 
 type TypeVariant = 'text' | 'contained' | 'outlined';
 export type ButtonMuiProps = ButtonProps & {
@@ -13,11 +13,12 @@ export type ButtonMuiProps = ButtonProps & {
   color?: 'primary' | 'secondary' | string;
   rippleColor?: string;
   round?: boolean;
+  as?: React.ElementType<any>;
 };
 
 type TypeStyledButtonMuiProps = {
   $variant: TypeVariant;
-  $color: TypeColor;
+  $color: IColor;
   $round?: boolean;
 };
 
@@ -89,8 +90,7 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
   }}
 
   &:disabled {
-    pointer-events: none;
-    cursor: default;
+    cursor: not-allowed;
     box-shadow: none;
 
     ${({ $variant }) => {
@@ -99,6 +99,10 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
           return css`
             color: rgb(0 0 0 / 26%);
             border: 1px solid rgb(0 0 0 / 12%);
+
+            &:hover {
+              background-color: transparent;
+            }
           `;
         case 'contained':
           return css`
@@ -108,6 +112,10 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
         case 'text':
           return css`
             color: rgb(0 0 0 / 26%);
+
+            &:hover {
+              background-color: transparent;
+            }
           `;
         default:
           return '';
