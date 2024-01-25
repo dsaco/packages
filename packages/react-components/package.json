@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.24",
+  "version": "3.1.43",
   "publishConfig": {
     "access": "public"
   },
@@ -36,7 +36,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@dsaco/utils": "^0.1.14",
+    "@dsaco/utils": "^0.1.16",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@react-spring/web": "^9.7.2"
@@ -52,6 +52,7 @@
     "@babel/runtime-corejs3": "^7.22.6",
     "@craco/craco": "^7.1.0",
     "@dsaco/eslint-config": "^1.0.3",
+    "@emotion/babel-plugin": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@react-spring/web": "^9.7.2",

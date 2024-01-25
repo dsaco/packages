@@ -9,6 +9,14 @@ import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
 import { animated, useSpring, useSpringRef } from '@react-spring/web';
 
+export const symbol = Symbol('mask ref init');
+
+export type MaskApiRef = {
+  open: () => void;
+  close: () => void;
+  [symbol]: (params: Omit<MaskApiRef, symbol>) => void;
+};
+
 export type MaskProps = {
   children?: React.ReactNode;
   visible?: boolean;
@@ -18,19 +26,23 @@ export type MaskProps = {
   maskColor?: string;
   maskBlur?: number;
   duration?: number;
+  noOpacity?: boolean;
+  api?: MaskApiRef;
   as?: React.ElementType<any>;
 } & React.HTMLProps<HTMLDivElement>;
 
-const container = document.createElement('div');
+let container: Element;
+if (typeof window !== 'undefined') {
+  container = document.createElement('div');
+}
 
-const AnimatedMask = animated(styled.div<{ maskColor: string; blur?: number }>`
+const AnimatedMask = animated(styled.div<{ blur?: number }>`
   position: fixed;
   inset: 0;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ maskColor }) => maskColor};
   ${({ blur }) => (blur ? `backdrop-filter: blur(${blur}px);` : '')}
 `);
 
@@ -43,6 +55,8 @@ export const Mask: React.FC<MaskProps> = ({
   onCancel,
   destroyOnClose,
   duration = 300,
+  noOpacity = false,
+  api,
   ...props
 }) => {
   const [_visible, _setVisible] = useState(visible);
@@ -50,6 +64,10 @@ export const Mask: React.FC<MaskProps> = ({
     if (!document.body.contains(container)) {
       document.body.appendChild(container);
     }
+    api?.[symbol]?.({
+      open: () => _setVisible(true),
+      close: () => _setVisible(false),
+    });
   }, []);
 
   useEffect(() => {
@@ -63,17 +81,23 @@ export const Mask: React.FC<MaskProps> = ({
         e.stopPropagation();
         e.preventDefault();
         onCancel?.();
-        _setVisible(false);
+        if (typeof visible === 'undefined') {
+          _setVisible(false);
+        }
       }
     },
-    [maskClosable]
+    [maskClosable, visible]
   );
 
   const transApi = useSpringRef();
   const spring = useSpring({
     ref: transApi,
-    from: { opacity: 0, display: 'none' },
-    to: [{ opacity: 1, display: 'flex' }],
+    from: {
+      opacity: 1,
+      backgroundColor: maskColor,
+      display: 'none',
+    },
+    to: [{ opacity: 1, backgroundColor: maskColor, display: 'flex' }],
   });
 
   useEffect(() => {
@@ -81,7 +105,13 @@ export const Mask: React.FC<MaskProps> = ({
       transApi.start(() => {
         return [
           {
-            opacity: 1,
+            ...(noOpacity
+              ? {
+                  backgroundColor: maskColor,
+                }
+              : {
+                  opacity: 1,
+                }),
             display: 'flex',
             config: { duration },
           },
@@ -90,7 +120,16 @@ export const Mask: React.FC<MaskProps> = ({
     } else {
       transApi.start(() => {
         return [
-          { opacity: 0, config: { duration } },
+          {
+            ...(noOpacity
+              ? {
+                  backgroundColor: 'rgb(0 0 0 / 0%)',
+                }
+              : {
+                  opacity: 0,
+                }),
+            config: { duration },
+          },
           { display: 'none', delay: duration },
         ];
       });
@@ -103,11 +142,27 @@ export const Mask: React.FC<MaskProps> = ({
       ref={maskDiv}
       style={spring}
       onClick={onMaskClick}
-      maskColor={maskColor}
       blur={maskBlur}
     >
       {destroyOnClose ? visible && children : children}
     </AnimatedMask>,
     container
   );
+};
+
+export const useMask = () => {
+  const ref = useRef<MaskApiRef>({
+    [symbol]({ open, close }: any) {
+      ref.current.open = open;
+      ref.current.close = close;
+    },
+    open() {
+      // need complete
+    },
+    close() {
+      // need complete
+    },
+  });
+
+  return [ref.current];
 };

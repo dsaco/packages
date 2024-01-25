@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { animated, useSpring } from '@react-spring/web';
 
 import { IconClose } from '../common/icons';
-import { Mask } from './Mask';
-import type { MaskProps } from './Mask';
+import { Mask, symbol } from './Mask';
+import type { MaskProps, MaskApiRef } from './Mask';
 
 export type ModalProps = {
   title?: string;
@@ -69,8 +69,20 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   visible,
   width,
+  api,
   ...props
 }) => {
+  const [_visible, _setVisible] = useState(visible);
+  useEffect(() => {
+    api?.[symbol]?.({
+      open: () => _setVisible(true),
+      close: () => _setVisible(false),
+    });
+  }, []);
+  useEffect(() => {
+    _setVisible(visible);
+  }, [visible]);
+
   const [{ scale }, transApi] = useSpring(() => ({
     scale: 0,
     config: {
@@ -79,19 +91,26 @@ export const Modal: React.FC<ModalProps> = ({
   }));
 
   useEffect(() => {
-    if (visible) {
+    if (_visible) {
       transApi({ scale: 1 });
     } else {
       transApi({ scale: 0 });
     }
-  }, [visible]);
+  }, [_visible]);
+
+  const onCloseClick = () => {
+    props.onCancel?.();
+    if (typeof visible === 'undefined') {
+      _setVisible(false);
+    }
+  };
 
   return (
-    <Mask visible={visible} {...props}>
+    <Mask visible={_visible} {...props} onCancel={onCloseClick}>
       <StyledAnimatedDialog style={{ scale }} width={width}>
         <StyledDialogHeader>
           <span>{title}</span>
-          <StyledDialogClose onClick={props.onCancel}>
+          <StyledDialogClose onClick={onCloseClick}>
             <IconClose style={{ fontSize: 20 }} />
           </StyledDialogClose>
         </StyledDialogHeader>
@@ -99,4 +118,21 @@ export const Modal: React.FC<ModalProps> = ({
       </StyledAnimatedDialog>
     </Mask>
   );
+};
+
+export const useModal = () => {
+  const ref = useRef<MaskApiRef>({
+    [symbol]({ open, close }: any) {
+      ref.current.open = open;
+      ref.current.close = close;
+    },
+    open() {
+      // need complete
+    },
+    close() {
+      // need complete
+    },
+  });
+
+  return [ref.current];
 };

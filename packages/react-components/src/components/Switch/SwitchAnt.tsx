@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Color, IColor } from '@dsaco/utils';
 
 import { SwitchProps } from '.';
-import { Color, IColor } from '@dsaco/utils';
 
 import { IconLoading } from '../common/icons';
 
-type SwitchAntProps = SwitchProps & {
+export type SwitchAntProps = SwitchProps & {
   loading?: boolean;
   width?: number;
   height?: number;
@@ -15,6 +15,7 @@ type SwitchAntProps = SwitchProps & {
   unCheckedChildren?: React.ReactNode;
   activeColor?: string;
   inactiveColor?: string;
+  handleColor?: string;
 };
 type TypeStyledSwitchAntProps = {
   $checked?: boolean;
@@ -24,6 +25,7 @@ type TypeStyledSwitchAntProps = {
   $padding: number;
   $activeColor: IColor;
   $inactiveColor: IColor;
+  $handleColor: string;
 };
 
 const StyledSwitchInner = styled.div<TypeStyledSwitchAntProps>`
@@ -96,7 +98,7 @@ const StyledSwitchAntHandle = styled.div<TypeStyledSwitchAntProps>`
     top: 0;
     bottom: 0;
     content: '';
-    background-color: #fff;
+    background-color: ${({ $handleColor }) => $handleColor};
     border-radius: ${({ $height }) => $height}px;
     box-shadow: 0 2px 4px 0 rgb(0 35 11 / 20%);
     transition: all 0.2s ease-in-out;
@@ -178,6 +180,7 @@ export const SwitchAnt: React.FC<SwitchAntProps> = ({
   unCheckedChildren,
   activeColor = 'rgb(22, 119, 255)',
   inactiveColor = 'rgb(191, 191, 191)',
+  handleColor = '#fff',
 }) => {
   const styledProps: TypeStyledSwitchAntProps = {
     $checked: checked,
@@ -187,6 +190,7 @@ export const SwitchAnt: React.FC<SwitchAntProps> = ({
     $padding: padding,
     $activeColor: Color(activeColor),
     $inactiveColor: Color(inactiveColor),
+    $handleColor: handleColor,
   };
   return (
     <StyledSwitchAnt

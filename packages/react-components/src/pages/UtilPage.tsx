@@ -1,21 +1,26 @@
 import { useEffect, useRef } from 'react';
 
 import { Message } from '@/components/Message';
-import { Notice } from '@/components/Notice';
-import { mask } from '@/components/Mask';
 
-import styles from './UtilPage.module.scss';
+import {
+  Api,
+  ContentProps,
+  ConfirmOptions,
+  GalleryOptions,
+  MaskOptions,
+} from '@/components/Api';
 
-const Item = (props: any) => {
+const a: ConfirmOptions = {};
+
+const Item = (props: ContentProps) => {
   return (
     <div>
-      <h1>sdkfjlskdjf</h1>
-      <button onClick={props.onClose}>close</button>
+      <h1>{props.toString()}</h1>
+      <button onClick={props.remove}>close</button>
     </div>
   );
 };
 
-let n = 0;
 export default function UtilPage() {
   useEffect(() => {
     // Message.duration = 5000;
@@ -72,16 +77,58 @@ export default function UtilPage() {
     <div className="h-screen p-5">
       <button
         onClick={() => {
-          mask.add({
-            key: ++n,
-            content: (
-              <Item
-                onClose={() => {
-                  console.log('here');
-                  mask.destroy(n);
-                }}
-              />
-            ),
+          // Api.confirm({
+          //   title: 'sdf',
+          // });
+          // Api.confirm({
+          //   title: 'ok',
+          //   // maskColor: 'red',
+          //   maskClosable: true,
+          //   content: <h1>okok</h1>,
+          //   onOk: () => {
+          //     console.log('onOK');
+          //   },
+          //   onCancel: () => {
+          //     console.log('oncancel');
+          //   },
+          //   // noOpacity: true,
+          //   // duration: 5000,
+          //   // zIndex: 2000,
+          // } as any);
+          Api.gallery({
+            photos: [
+              'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+              'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+              'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',
+            ],
+            maskClosable: true,
+            // maskColor: 'red',
+            // noOpacity: true,
+          });
+          // setTimeout(() => {
+          //   Api.gallery({
+          //     photos: [
+          //       'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+          //       'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+          //       'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',
+          //     ],
+          //     maskClosable: true,
+          //   });
+          // }, 5000);
+        }}
+      >
+        say
+      </button>
+      <hr />
+      <button
+        onClick={() => {
+          const k = Api.mask({
+            Content: <Item />,
+            // duration: 3000,
+            // onClose() {
+            //   console.log('onCLose');
+            // },
+            maskColor: 'red',
             // maskClosable: true,
             // className: styles.blue,
           });
@@ -97,7 +144,7 @@ export default function UtilPage() {
       </button>
       <button
         onClick={() => {
-          Notice.confirm({
+          Api.confirm({
             // width: 300,
             title: '警告',
             content: <h1>sdkfjlskdjf</h1>,

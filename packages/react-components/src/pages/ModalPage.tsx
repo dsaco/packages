@@ -1,11 +1,13 @@
 import {
   // useMask,
   // useModal,
-  Modal as OModal,
+  Modal,
   Mask,
 } from '@/components/Modal';
 import { useSpringValue, animated } from '@react-spring/web';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useMask } from '@/components/Modal/Mask';
+import { useModal } from '@/components/Modal/Modal';
 
 const Item = () => {
   const [value, set] = useState('');
@@ -40,20 +42,51 @@ export default function ModalPage() {
 
   // const { Modal, set: setModalVisible } = useModal();
   const [maskVisible, setMaskVisible] = useState(false);
+
+  const maskRef = useRef<any>({});
+  const [mmmm] = useMask();
+  const [nnnn] = useModal();
+
   return (
     <div className="h-screen p-5">
-      <button onClick={() => setMaskVisible(true)}>open mask</button>
+      <button
+        onClick={() => {
+          mmmm.open();
+        }}
+      >
+        open mask
+      </button>
+      <button
+        onClick={() => {
+          // maskRef.current?.open();
+          // console.log(maskRef.current());
+          // maskRef.current?.open();
+          // mmmm.open();
+          nnnn.open();
+        }}
+      >
+        open modal
+      </button>
       <Mask
-        visible={maskVisible}
+        api={mmmm}
+        // mmm={(open: any, close: any) => {
+        //   maskRef.current.open = open;
+        //   maskRef.current.close = close;
+        // }}
+        // visible={maskVisible}
         // onCancel={() => setMaskVisible(false)}
         maskColor="rgb(255 0 0 / 30%)"
         maskBlur={2}
         maskClosable
         className="asdfjklsdj"
+        // contentScalable={false}
       >
         <h1
           onClick={() => {
-            setMaskVisible(false);
+            // setMaskVisible(false);
+            // console.log(maskRef.current);
+            // maskRef.current?.close();
+            mmmm.close();
           }}
         >
           close
@@ -61,9 +94,10 @@ export default function ModalPage() {
         <h1>sdfsfj</h1>
         <h1>sdfsfj</h1>
       </Mask>
-      <OModal
-        visible={v}
-        onCancel={() => setv(false)}
+      <Modal
+        api={nnnn}
+        // visible={v}
+        // onCancel={() => setv(false)}
         title="创建深深"
         maskClosable
         width={768}
@@ -73,8 +107,9 @@ export default function ModalPage() {
         <h1>sadkfjslkdjf</h1>
         <h1>sadkfjslkdjf</h1>
         <h1>sadkfjslkdjf</h1>
+        <h3 onClick={() => nnnn.close()}>close</h3>
         <Item />
-      </OModal>
+      </Modal>
       <animated.div style={{ opacity, color: 'red' }}>SOME</animated.div>
       <button onClick={() => setv(false)}>0</button>
       <br />

@@ -14,6 +14,7 @@ const ModalPage = lazy(() => import('@/pages/ModalPage'));
 const SwitchPage = lazy(() => import('@/pages/SwitchPage'));
 const ButtonPage = lazy(() => import('@/pages/ButtonPage'));
 const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
+const MasonryPage = lazy(() => import('@/pages/MasonryPage'));
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: 'loading',
         element: <LoadingPage />,
+      },
+      {
+        path: 'masonry',
+        element: <MasonryPage />,
       },
     ],
   },

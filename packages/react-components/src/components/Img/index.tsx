@@ -1,106 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useTransition, animated } from '@react-spring/web';
+import { animated, useSpring, useSpringRef } from '@react-spring/web';
 
-import { useMask } from '../Modal/useMask';
+import { IconLoading } from '../common/icons';
 
-type ImgProps = {
-  src: string;
-  alt?: string;
-  className?: string;
-  style?: React.CSSProperties;
+import { Api } from '../Api';
+
+export type ImgProps = {
   width?: number;
   height?: number;
   placeholder?: React.ReactNode;
-};
+} & Omit<React.HTMLProps<HTMLImageElement>, 'placeholder'>;
 
-const Placeholder = () => {
-  return (
-    <svg viewBox="0 0 44 44" stroke="#fff">
-      <g fill="none" fillRule="evenodd" strokeWidth="2">
-        <circle cx="22" cy="22" r="17.3535">
-          <animate
-            attributeName="r"
-            begin="0s"
-            dur="1.8s"
-            values="1; 20"
-            calcMode="spline"
-            keyTimes="0; 1"
-            keySplines="0.165, 0.84, 0.44, 1"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="stroke-opacity"
-            begin="0s"
-            dur="1.8s"
-            values="1; 0"
-            calcMode="spline"
-            keyTimes="0; 1"
-            keySplines="0.3, 0.61, 0.355, 1"
-            repeatCount="indefinite"
-          />
-        </circle>
-        <circle cx="22" cy="22" r="19.9696">
-          <animate
-            attributeName="r"
-            begin="-0.9s"
-            dur="1.8s"
-            values="1; 20"
-            calcMode="spline"
-            keyTimes="0; 1"
-            keySplines="0.165, 0.84, 0.44, 1"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="stroke-opacity"
-            begin="-0.9s"
-            dur="1.8s"
-            values="1; 0"
-            calcMode="spline"
-            keyTimes="0; 1"
-            keySplines="0.3, 0.61, 0.355, 1"
-            repeatCount="indefinite"
-          />
-        </circle>
-      </g>
-    </svg>
-  );
-};
-const Img: React.FC<ImgProps> = ({
-  src,
-  width,
-  height,
-  placeholder,
-  ...restProps
-}) => {
-  const [loaded, setLoaded] = useState(false);
+export const Img: React.FC<ImgProps> = ({ placeholder, ...props }) => {
+  const DURATION = 300;
   const imgRef = useRef(null);
-
-  const { Mask, set: setMask, visible: visiblePreview } = useMask();
-  const [imgStyle, setImgStyle] = useState<React.CSSProperties>();
-  const [imgSize, setImgSize] = useState<{ width: number; height: number }>();
-
-  const imgTransitions = useTransition(visiblePreview, {
-    from: {
-      transform: `translate3d(0px, 0px, 0) scale3d(1, 1, 1)`,
-    },
-    enter: {
-      transform: imgStyle?.transform,
-    },
-    leave: {
-      transform: `translate3d(0px, 0px, 0) scale3d(1, 1, 1)`,
-    },
+  const fromStyle = useRef({
+    top: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
+  const toStyle = useRef({
+    width: 0,
+    height: 0,
   });
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      setImgSize({ width: img.width, height: img.height });
-      setLoaded(true);
-    };
-  }, []);
-
-  const onPreview = () => {
+  const transApi = useSpringRef();
+  const onPreview: React.MouseEventHandler<HTMLImageElement> = () => {
     const {
       x: left,
       y: top,
@@ -108,92 +34,144 @@ const Img: React.FC<ImgProps> = ({
       height,
     } = (imgRef.current as unknown as HTMLImageElement).getBoundingClientRect();
 
-    const clientWidth = document.documentElement.clientWidth;
-    const clientHeight = document.documentElement.clientHeight;
+    fromStyle.current.top = top;
+    fromStyle.current.left = left;
+    fromStyle.current.width = width;
+    fromStyle.current.height = height;
+    const stop = () => {
+      transApi.start(() => [
+        {
+          top: fromStyle.current.top,
+          left: fromStyle.current.left,
+          width: toStyle.current.width,
+          height: toStyle.current.height,
+          scaleX: fromStyle.current.width / toStyle.current.width,
+          scaleY: fromStyle.current.height / toStyle.current.height,
+          position: 'absolute',
+          config: {
+            duration: DURATION,
+          },
+        },
+      ]);
+    };
+    const start = () => {
+      const bodyWidth = document.body.clientWidth;
+      const bodyHeight = document.body.clientHeight;
 
-    const iw = imgSize?.width ?? 0;
-    const ih = imgSize?.height ?? 0;
+      let { width, height } = toStyle.current;
 
-    const offsetX = (clientWidth - width) / 2 - left;
-    const offsetY = (clientHeight - height) / 2 - top;
-
-    let scaleW;
-    let scaleH;
-
-    const bigerWidth = iw > clientWidth;
-    const bigerHeight = ih > clientHeight;
-    if (bigerWidth && bigerHeight) {
-      if (iw / ih > clientWidth / clientHeight) {
-        scaleW = clientWidth / width;
-        scaleH = ((ih / iw) * clientWidth) / height;
+      if (width < bodyWidth && height < bodyHeight) {
+        // nochange
+      } else if (width < bodyWidth) {
+        width *= bodyHeight / height;
+        height = bodyHeight;
+      } else if (height < bodyHeight) {
+        height *= bodyWidth / width;
+        width = bodyWidth;
       } else {
-        scaleH = clientHeight / height;
-        scaleW = ((iw / ih) * clientHeight) / width;
+        if (width / height > bodyWidth / bodyHeight) {
+          height *= bodyWidth / width;
+          width = bodyWidth;
+        } else {
+          width *= bodyHeight / height;
+          height = bodyHeight;
+        }
       }
-    } else if (bigerWidth) {
-      scaleW = clientWidth / width;
-      scaleH = ((ih / iw) * clientWidth) / height;
-    } else if (bigerHeight) {
-      scaleH = clientHeight / height;
-      scaleW = ((iw / ih) * clientHeight) / width;
-    } else {
-      scaleW = iw / width;
-      scaleH = ih / height;
-    }
+      const left = (bodyWidth - width) / 2;
+      const top = (bodyHeight - height) / 2;
 
-    setImgStyle({
-      left,
-      top,
-      width,
-      height,
-      transform: `translate3d(${offsetX}px, ${offsetY}px, 0) scale3d(${scaleW}, ${scaleH}, 1)`,
+      transApi.start(() => [
+        {
+          scaleX: 1,
+          scaleY: 1,
+          left: left < 0 ? 0 : left,
+          top: top < 0 ? 0 : top,
+          width,
+          height,
+          position: 'absolute',
+          config: {
+            duration: DURATION,
+          },
+        },
+        {
+          position: 'initial',
+          width: 'auto',
+          height: 'auto',
+          delay: DURATION,
+        },
+      ]);
+    };
+    const Content = () => {
+      const spring = useSpring({
+        ref: transApi,
+        from: {
+          top: fromStyle.current.top,
+          left: fromStyle.current.left,
+          width: toStyle.current.width,
+          height: toStyle.current.height,
+          scaleX: fromStyle.current.width / toStyle.current.width,
+          scaleY: fromStyle.current.height / toStyle.current.height,
+          position: 'absolute',
+        },
+        config: {
+          duration: 0,
+        },
+      });
+
+      useEffect(() => {
+        start();
+      }, []);
+      return (
+        <animated.img
+          style={{
+            ...spring,
+            position: spring.position as any,
+            transformOrigin: 'top left',
+          }}
+          src={props.src}
+        />
+      );
+    };
+
+    Api.mask({
+      Content: <Content />,
+      maskClosable: true,
+      duration: DURATION,
+      onClose: stop,
     });
-    setMask(true);
   };
 
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = props.src as string;
+    img.onload = () => {
+      toStyle.current.width = img.width;
+      toStyle.current.height = img.height;
+
+      setLoaded(true);
+    };
+  }, [props]);
+
   if (loaded) {
-    return (
-      <>
-        <img ref={imgRef} onClick={onPreview} src={src} {...restProps} />
-        <Mask closable>
-          {imgTransitions((style, show) =>
-            show ? (
-              <animated.img
-                src={src}
-                style={{
-                  ...imgStyle,
-                  ...style,
-                  position: 'absolute',
-                }}
-                alt=""
-              />
-            ) : null
-          )}
-        </Mask>
-      </>
-    );
+    return <img ref={imgRef} {...props} onClick={onPreview} />;
   } else {
     return (
       <div
+        {...props}
         style={{
-          ...restProps?.style,
-          width,
-          height,
-          backgroundColor: '#eee',
+          ...props.style,
+          backgroundColor: 'rgb(247 247 247)',
+          width: props.width,
+          height: props.height,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        className={restProps?.className}
       >
-        {placeholder && typeof placeholder !== 'boolean' ? (
-          placeholder
-        ) : (
-          <Placeholder />
-        )}
+        {placeholder || <IconLoading style={{ fontSize: 24, color: '#bbb' }} />}
       </div>
     );
   }
 };
-
-export default Img;
