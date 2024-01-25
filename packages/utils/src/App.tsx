@@ -1,8 +1,43 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { debounce as deb } from 'lodash';
 
 import { Request as _Request } from './utils';
+
+import { debounce } from './utils';
+
+const debounced = debounce(
+  function (this: any, value: number) {
+    console.log(this.name, value);
+    return value;
+  },
+  32,
+  { leading: true }
+);
+
+debounced.call({ name: '章三' }, 333);
+
+const a = debounced('1', {});
+console.log(a);
+
+const deb2 = deb((value) => {
+  return value;
+}, 32);
+
+const b = deb2('2');
+console.log(b);
+
+const debounced2 = deb((value) => {
+  return value;
+}, 32);
+
+const res = [debounced2('a'), debounced2('b'), debounced2('c')];
+console.log(res);
+setTimeout(() => {
+  const results = [debounced2('d'), debounced2('e'), debounced2('f')];
+  console.log(results);
+}, 1000);
 
 type ErrorData = {
   error: string;

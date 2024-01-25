@@ -17,6 +17,7 @@
     "publish:eslint-config": "npm publish ./packages/eslint-config",
 
     "start:utils": "pnpm -C packages/utils start",
+    "test:utils": "pnpm -C packages/utils test",
     "build:utils": "pnpm -C packages/utils build",
     "publish:utils": "npm publish ./packages/utils"
   },
