@@ -1,0 +1,15 @@
+@import url("normalize.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* --ds-button-size-middle: 40px; */
+}

@@ -3,3 +3,4 @@ packages:
   - 'packages/cra-template-typescript/template'
   - 'packages/cra-template-admin/template'
   - 'packages/utils'
+  - 'packages/react-components'

@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig",
+
+    "compilerOptions": {
+      "declaration": true,
+      "noEmit": false,
+      "emitDeclarationOnly": true,
+      "outDir": "es"
+    },
+    "include": ["./src/components/index.ts", "./src/components/Test/index.tsx"],
+    "exclude": ["node_modules", "**/*.test.ts"]
+  }
+  
