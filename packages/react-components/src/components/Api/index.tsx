@@ -11,12 +11,10 @@ import { Preview } from './Preview';
 export type { PreviewOptions } from './Preview';
 export class Api {
   static init() {
-    const root = createRoot(document.createElement('div'));
-
-    Gallery.init(root);
-    Confirm.init(root);
-    Mask.init(root);
-    Preview.init(root);
+    Gallery.init();
+    Confirm.init();
+    Mask.init();
+    // Preview.init(root);
   }
   static gallery = Gallery.preview;
   static confirm = Confirm.confirm;

@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Root } from 'react-dom/client';
+import { Root, createRoot } from 'react-dom/client';
 import styled from '@emotion/styled';
 import { animated } from '@react-spring/web';
 
@@ -90,8 +90,9 @@ export class Confirm {
   private static ref: React.RefObject<IRef> = createRef<IRef>();
   private static key = 0;
 
-  static init(root: Root) {
+  static init() {
     if (!Confirm.ref.current) {
+      const root = createRoot(document.createElement('div'));
       root.render(createPortal(<Container ref={Confirm.ref} />, document.body));
     }
   }

@@ -20,3 +20,6 @@ export type { ConfirmOptions, GalleryOptions } from './Api';
 
 export { Masonry } from './Masonry';
 export type { MasonryProps } from './Masonry';
+
+export { LoadMore } from './LoadMore';
+export type { LoadMoreProps } from './LoadMore';

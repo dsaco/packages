@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useSpring, useSpringRef } from '@react-spring/web';
 
 import { IconClose } from '../common/icons';
 import { Mask, symbol } from './Mask';
@@ -83,18 +83,19 @@ export const Modal: React.FC<ModalProps> = ({
     _setVisible(visible);
   }, [visible]);
 
-  const [{ scale }, transApi] = useSpring(() => ({
-    scale: 0,
+  const transApi = useSpringRef();
+  const spring = useSpring({
+    ref: transApi,
     config: {
       duration: 200,
     },
-  }));
+  });
 
   useEffect(() => {
     if (_visible) {
-      transApi({ scale: 1 });
+      transApi.start({ scale: 1 });
     } else {
-      transApi({ scale: 0 });
+      transApi.start({ scale: 0 });
     }
   }, [_visible]);
 
@@ -107,7 +108,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Mask visible={_visible} {...props} onCancel={onCloseClick}>
-      <StyledAnimatedDialog style={{ scale }} width={width}>
+      <StyledAnimatedDialog style={spring} width={width}>
         <StyledDialogHeader>
           <span>{title}</span>
           <StyledDialogClose onClick={onCloseClick}>
