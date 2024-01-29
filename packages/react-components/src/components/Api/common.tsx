@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useState,
@@ -92,6 +93,14 @@ export const Container = forwardRef((props, ref) => {
     },
     []
   );
+
+  useEffect(() => {
+    if (items.length) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.removeProperty('overflow');
+    }
+  }, [items]);
 
   return (
     <div data-symbol="cont">

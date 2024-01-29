@@ -102,6 +102,7 @@ export const Mask: React.FC<MaskProps> = ({
 
   useEffect(() => {
     if (_visible) {
+      document.body.style.overflow = 'hidden';
       transApi.start(() => {
         return [
           {
@@ -118,6 +119,7 @@ export const Mask: React.FC<MaskProps> = ({
         ];
       });
     } else {
+      document.body.style.removeProperty('overflow');
       transApi.start(() => {
         return [
           {

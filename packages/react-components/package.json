@@ -1,6 +1,6 @@
 {
   "name": "@dsaco/rc",
-  "version": "3.1.46",
+  "version": "3.1.47",
   "publishConfig": {
     "access": "public"
   },
