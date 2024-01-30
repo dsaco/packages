@@ -55,8 +55,8 @@ export const Img: React.FC<ImgProps> = ({ placeholder, ...props }) => {
       ]);
     };
     const start = () => {
-      const bodyWidth = document.body.clientWidth;
-      const bodyHeight = document.body.clientHeight;
+      const bodyWidth = window.innerWidth;
+      const bodyHeight = window.innerHeight;
 
       let { width, height } = toStyle.current;
 
