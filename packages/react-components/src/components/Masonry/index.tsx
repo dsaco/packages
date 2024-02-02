@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import { animated, useTransition } from '@react-spring/web';
 import { debounce } from '@dsaco/utils';
 
-import { useMeasure, useMedia } from '../hooks';
+import { useMeasure, useColumns } from '../hooks';
 
 const StyledContainer = styled.div`
   position: relative;
@@ -27,6 +27,8 @@ export type MasonryProps<T = any> = {
   render?: (props: T) => React.ReactNode;
   gutter?: number;
   rowKey?: string | number;
+  columnArray?: number[][];
+  defaultColumn?: number;
 };
 
 export const Masonry: React.FC<MasonryProps> = ({
@@ -34,12 +36,14 @@ export const Masonry: React.FC<MasonryProps> = ({
   render,
   gutter = 16,
   rowKey = 'id',
+  columnArray = [
+    [1500, 5],
+    [1000, 4],
+    [600, 3],
+  ],
+  defaultColumn = 3,
 }) => {
-  const columns = useMedia(
-    ['(min-width: 1500px)', '(min-width: 1000px)', '(min-width: 600px)'],
-    [5, 4, 3],
-    2
-  );
+  const columns = useColumns(columnArray, defaultColumn);
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [items, setItems] = useState<{ height: number; [key: string]: any }[]>(

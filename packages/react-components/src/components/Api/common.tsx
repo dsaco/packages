@@ -103,7 +103,7 @@ export const Container = forwardRef((props, ref) => {
   }, [items]);
 
   return (
-    <div data-symbol="cont">
+    <div data-symbol="">
       {transitions((props, { zIndex = 1000, ...item }) => {
         return (
           <StyledAnimatedContainer

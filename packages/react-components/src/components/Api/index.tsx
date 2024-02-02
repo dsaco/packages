@@ -1,5 +1,3 @@
-import { createRoot } from 'react-dom/client';
-
 export type { Options, ContentProps } from './common';
 import { Gallery } from './Gallery';
 export type { GalleryOptions } from './Gallery';
@@ -14,7 +12,7 @@ export class Api {
     Gallery.init();
     Confirm.init();
     Mask.init();
-    // Preview.init(root);
+    // Preview.init();
   }
   static gallery = Gallery.preview;
   static confirm = Confirm.confirm;
