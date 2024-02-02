@@ -1,8 +1,8 @@
 import React, { createRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Root, createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import styled from '@emotion/styled';
-import { animated, useSprings } from '@react-spring/web';
+import { animated, useSprings, config } from '@react-spring/web';
 
 import { Container } from './common';
 import type { IRef, Options, ContentProps } from './common';
@@ -29,6 +29,7 @@ const StyledClose = styled.div`
     content: '';
     background-color: #fff;
     box-shadow: 0 0 5px #000;
+    transition: transform 0.3s;
     transform: rotateZ(45deg);
   }
 
@@ -40,13 +41,19 @@ const StyledClose = styled.div`
     content: '';
     background-color: #fff;
     box-shadow: 0 0 5px #000;
+    transition: transform 0.3s;
     transform: rotateZ(-45deg);
   }
 
   &:hover {
-    &::before,
+    &::before {
+      box-shadow: none;
+      transform: rotateZ(135deg);
+    }
+
     &::after {
       box-shadow: none;
+      transform: rotateZ(45deg);
     }
   }
 `;
@@ -67,7 +74,7 @@ const StyledArrow = styled.div<{ left?: boolean }>`
     content: '';
     background-color: #fff;
     box-shadow: -2px 0 5px #000;
-    transform: rotateZ(${({ left }) => (left ? '-' : '')}45deg);
+    transform: rotateZ(${({ left }) => (left ? '-' : '')}55deg);
   }
 
   &::after {
@@ -78,13 +85,19 @@ const StyledArrow = styled.div<{ left?: boolean }>`
     content: '';
     background-color: #fff;
     box-shadow: -2px 0 5px #000;
-    transform: rotateZ(${({ left }) => (left ? '' : '-')}45deg);
+    transition: all 0.3s;
+    transform: rotateZ(${({ left }) => (left ? '' : '-')}55deg);
   }
 
   &:hover {
-    &::before,
+    &::before {
+      box-shadow: none;
+      transform: rotateZ(${({ left }) => (left ? '-' : '')}45deg);
+    }
+
     &::after {
       box-shadow: none;
+      transform: rotateZ(${({ left }) => (left ? '' : '-')}45deg);
     }
   }
 `;
@@ -116,6 +129,8 @@ const GalleryContainer: React.FC<ContentProps & GalleryOptions> = ({
     len,
     (idx) => ({
       translateX: i < idx ? '100%' : i > idx ? '-100%' : '0%',
+      scale: i === idx ? 1 : 0.5,
+      config: config.default,
     }),
     [i]
   );
