@@ -37,9 +37,11 @@ export const Masonry: React.FC<MasonryProps> = ({
   gutter = 16,
   rowKey = 'id',
   columnArray = [
-    [1500, 5],
-    [1000, 4],
-    [600, 3],
+    [512, 1],
+    [768, 2],
+    [1024, 3],
+    [1440, 4],
+    [1680, 5],
   ],
   defaultColumn = 3,
 }) => {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 export function useColumns(widthColumn: number[][], defaultValue: number) {
   const match = useCallback(() => {
-    const queries = widthColumn.map(([w]) => `(min-width: ${w}px)`);
+    const queries = widthColumn.map(([w]) => `(max-width: ${w}px)`);
     const values = widthColumn.map(([w, c]) => c);
     return (
       values[queries.findIndex((q) => matchMedia(q).matches)] || defaultValue
