@@ -1,3 +1,4 @@
+'use client';
 import React, {
   MouseEventHandler,
   useCallback,
@@ -60,6 +61,7 @@ export const Mask: React.FC<MaskProps> = ({
   ...props
 }) => {
   const [_visible, _setVisible] = useState(visible);
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
     if (!document.body.contains(container)) {
       document.body.appendChild(container);
@@ -68,6 +70,7 @@ export const Mask: React.FC<MaskProps> = ({
       open: () => _setVisible(true),
       close: () => _setVisible(false),
     });
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -138,18 +141,20 @@ export const Mask: React.FC<MaskProps> = ({
     }
   }, [_visible]);
 
-  return createPortal(
-    <AnimatedMask
-      {...props}
-      ref={maskDiv}
-      style={spring}
-      onClick={onMaskClick}
-      blur={maskBlur}
-    >
-      {destroyOnClose ? visible && children : children}
-    </AnimatedMask>,
-    container
-  );
+  return mounted
+    ? createPortal(
+        <AnimatedMask
+          {...props}
+          ref={maskDiv}
+          style={spring}
+          onClick={onMaskClick}
+          blur={maskBlur}
+        >
+          {destroyOnClose ? visible && children : children}
+        </AnimatedMask>,
+        container
+      )
+    : null;
 };
 
 export const useMask = () => {
