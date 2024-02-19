@@ -143,94 +143,103 @@ export default function ButtonPage() {
           disabled outline ghost
         </ButtonAnt>
       </div>
-
       <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">variant: disabled</span>
-        <ButtonMui variant="text" disabled>
-          text
+        <span className="mr-4">contained</span>
+        <ButtonMui type="contained">默认</ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="contained" color="primary">
+          primary
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" disabled>
-          contained
+        <ButtonMui type="contained" color="secondary">
+          secondary
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" disabled>
-          outlined
+        <ButtonMui type="contained" color="#800080">
+          #800080
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="contained" round>
+          圆角
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="contained" disabled>
+          不可用
         </ButtonMui>
       </div>
       <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">color: primary</span>
-        <ButtonMui variant="text" color="primary">
-          text
+        <span className="mr-4">outlined</span>
+        <ButtonMui type="outlined">默认</ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="outlined" color="primary">
+          primary
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" color="primary">
-          contained
+        <ButtonMui type="outlined" color="secondary">
+          secondary
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" color="primary">
-          outlined
+        <ButtonMui type="outlined" color="#800080">
+          #800080
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="outlined" round>
+          圆角
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="outlined" disabled>
+          不可用
         </ButtonMui>
       </div>
       <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">color: primary round</span>
-        <ButtonMui variant="text" color="primary" round>
-          text
+        <span className="mr-4">text</span>
+        <ButtonMui type="text">默认</ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="text" color="primary">
+          primary
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="text" color="secondary">
+          secondary
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="text" color="#800080">
+          #800080
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="text" round>
+          圆角
+        </ButtonMui>
+        &nbsp;&nbsp;&nbsp;
+        <ButtonMui type="text" disabled>
+          不可用
+        </ButtonMui>
+      </div>
+      <div className="flex items-center border-zinc-500 border-b py-2">
+        <span className="mr-4">自定义遮罩颜色</span>
+        <ButtonMui type="outlined" rippleColor="rgb(0 255 255 / 30%)">
+          rgb(0 255 255 / 30%)
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
         <ButtonMui
-          variant="contained"
+          type="outlined"
           color="primary"
-          round
-          // className={`${styles.rounded} ${styles.a}`}
+          rippleColor="rgb(255 0 0 / 30%)"
         >
-          contained styles className
+          rgb(255 0 0 / 30%)
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" color="primary" round>
-          outlined
-        </ButtonMui>
-      </div>
-      <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">color: secondary</span>
-        <ButtonMui variant="text" color="secondary">
-          text
+        <ButtonMui type="contained" color="secondary" rippleColor="#f009">
+          #f009
         </ButtonMui>
         &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" color="secondary">
-          contained
-        </ButtonMui>
-        &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" color="secondary">
-          outlined
-        </ButtonMui>
-      </div>
-      <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">color: #800080</span>
-        <ButtonMui variant="text" color="#800080">
-          text
-        </ButtonMui>
-        &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" color="#800080">
-          contained
-        </ButtonMui>
-        &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" color="#800080">
-          outlined
-        </ButtonMui>
-      </div>
-      <div className="flex items-center border-zinc-500 border-b py-2">
-        <span className="mr-4">color: #ffff00</span>
-        <ButtonMui variant="text" color="#ffff00">
-          text
-        </ButtonMui>
-        &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="contained" color="#ffff00">
-          contained
-        </ButtonMui>
-        &nbsp;&nbsp;&nbsp;
-        <ButtonMui variant="outlined" color="#ffff00">
-          outlined
+        <ButtonMui
+          type="outlined"
+          color="#800080"
+          rippleColor="#ff00ff99"
+          round
+        >
+          #ff00ff99
         </ButtonMui>
       </div>
     </div>

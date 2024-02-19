@@ -69,11 +69,12 @@ const Content: React.FC<ConfirmOptions & ContentProps> = ({
             onCancel?.();
             remove?.();
           }}
-          variant="outlined"
+          type="outlined"
         >
           {cancelText}
         </ButtonMui>
         <ButtonMui
+          color="primary"
           onClick={() => {
             onOk?.();
             remove?.();

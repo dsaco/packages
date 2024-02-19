@@ -10,6 +10,8 @@ import { createRoot } from 'react-dom/client';
 import styled from '@emotion/styled';
 import { animated, useTransition } from '@react-spring/web';
 
+import { IconError, IconInfo, IconSuccess, IconWarning } from '../common/icons';
+
 type IRef = {
   add: (options: IMessage) => void;
   clear: () => void;
@@ -23,28 +25,35 @@ type IMessage = {
 };
 
 const StyledNotice = styled.div<{ type: IMessageType }>`
-  padding: 8px 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
   margin-bottom: 16px;
   pointer-events: all;
   background-color: #fff;
-  border-left: 4px solid transparent;
-  border-left-color: ${({ type }) => {
-    switch (type) {
-      case 'info':
-        return '#1890ff';
-      case 'success':
-        return '#52c41a';
-      case 'error':
-        return '#ff4d4f';
-      case 'warn':
-      case 'warning':
-        return '#faad14';
-      default:
-        return '#0ff';
-    }
-  }};
+  border-radius: 8px;
   box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%),
     0 9px 28px 8px rgb(0 0 0 / 5%);
+
+  > span:first-child {
+    margin-right: 8px;
+    color: ${({ type }) => {
+      switch (type) {
+        case 'info':
+          return '#1890ff';
+        case 'success':
+          return '#52c41a';
+        case 'error':
+          return '#ff4d4f';
+        case 'warn':
+        case 'warning':
+          return '#faad14';
+        default:
+          return '#0ff';
+      }
+    }};
+  }
 `;
 const Notice: React.FC<IMessage & { onClose: () => void }> = ({
   id,
@@ -62,7 +71,11 @@ const Notice: React.FC<IMessage & { onClose: () => void }> = ({
   }, []);
   return (
     <StyledNotice type={type} {...props}>
-      {msg}
+      {type === 'success' && <IconSuccess />}
+      {type === 'error' && <IconError />}
+      {type === 'warn' && <IconWarning />}
+      {type === 'info' && <IconInfo />}
+      <span>{msg}</span>
     </StyledNotice>
   );
 };
@@ -102,6 +115,7 @@ const Container = forwardRef((props, ref) => {
     from: { transform: 'translateY(-100%)', opacity: 0 },
     enter: { transform: 'translateY(0%)', opacity: 1 },
     leave: { transform: 'translateY(-100%)', opacity: 0 },
+    config: { mass: 1, tension: 280, friction: 30 },
   });
   return (
     <StyledContainer>
@@ -120,7 +134,7 @@ export class Message {
   private static ref: React.RefObject<IRef> = createRef<IRef>();
   private static key = 0;
 
-  static duration = 2000;
+  static duration = 3000;
   static add(type: IMessageType, msg: string, duration = Message.duration) {
     if (!Message.ref.current) {
       const root = createRoot(document.createElement('div'));

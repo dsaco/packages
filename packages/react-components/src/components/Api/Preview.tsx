@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Root } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { animated, useSpring, useSpringRef } from '@react-spring/web';
 
 import { Container } from './common';
@@ -159,8 +159,9 @@ export class Preview {
   private static ref: React.RefObject<IRef> = createRef<IRef>();
   private static key = 0;
 
-  static init(root: Root) {
+  static init() {
     if (!Preview.ref.current) {
+      const root = createRoot(document.createElement('div'));
       root.render(createPortal(<Container ref={Preview.ref} />, document.body));
     }
   }

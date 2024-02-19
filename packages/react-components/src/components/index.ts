@@ -16,7 +16,7 @@ export { SwitchAnt } from './Switch';
 export type { SwitchAntProps } from './Switch';
 
 export { Api } from './Api';
-export type { ConfirmOptions, GalleryOptions } from './Api';
+export type { ConfirmOptions, GalleryOptions, MaskOptions } from './Api';
 
 export { Masonry } from './Masonry';
 export type { MasonryProps } from './Masonry';

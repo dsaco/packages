@@ -77,9 +77,6 @@ export default function UtilPage() {
     <div className="h-screen p-5">
       <button
         onClick={() => {
-          Api.confirm({
-            title: 'sdf',
-          });
           // Api.confirm({
           //   title: 'ok',
           //   // maskColor: 'red',
@@ -95,16 +92,16 @@ export default function UtilPage() {
           //   // duration: 5000,
           //   // zIndex: 2000,
           // } as any);
-          // Api.gallery({
-          //   photos: [
-          //     'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
-          //     'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
-          //     'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',
-          //   ],
-          //   maskClosable: true,
-          //   // maskColor: 'red',
-          //   // noOpacity: true,
-          // });
+          Api.gallery({
+            photos: [
+              'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+              'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+              'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',
+            ],
+            maskClosable: true,
+            // maskColor: 'red',
+            // noOpacity: true,
+          });
           // setTimeout(() => {
           //   Api.gallery({
           //     photos: [
@@ -193,7 +190,6 @@ export default function UtilPage() {
       <button
         onClick={() => {
           Message.clear();
-          Message.add('error', 'sdf');
         }}
       >
         clear
