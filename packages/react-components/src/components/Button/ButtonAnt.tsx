@@ -6,6 +6,7 @@ import { Wave } from '../Wave';
 
 export type ButtonAntProps = React.HTMLProps<HTMLButtonElement> & {
   as?: React.ElementType<any>;
+  htmlType?: 'submit' | 'reset' | 'button';
   // loading?: boolean;
   // shape?: 'default' | 'circle' | 'round';
   // size?: 'large' | 'middle' | 'small';
@@ -20,7 +21,6 @@ type TypeStyledButtonAntProps = {
   $ghost?: boolean;
   $color: IColor;
   $round?: boolean;
-  disabled?: boolean;
 };
 const getCss = ({ $ghost, $type, $color }: TypeStyledButtonAntProps) => {
   const themeColor = $color.rgb;
@@ -139,6 +139,7 @@ const StyledButtonAnt = styled.button<TypeStyledButtonAntProps>`
 `;
 
 export const ButtonAnt: React.FC<ButtonAntProps> = ({
+  htmlType = 'button',
   type,
   color = 'primary',
   ghost,
@@ -157,6 +158,7 @@ export const ButtonAnt: React.FC<ButtonAntProps> = ({
   }, [color]);
   return (
     <StyledButtonAnt
+      type={htmlType}
       $type={type}
       $ghost={ghost}
       $color={$color}

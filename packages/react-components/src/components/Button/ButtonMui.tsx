@@ -4,11 +4,11 @@ import { css } from '@emotion/react';
 
 import { Ripple } from '../Ripple';
 
-import type { ButtonProps } from '.';
 import { Color, IColor } from '@dsaco/utils';
 
 export type ButtonMuiProps = React.HTMLProps<HTMLButtonElement> & {
   as?: React.ElementType<any>;
+  htmlType?: 'submit' | 'reset' | 'button';
   type?: 'text' | 'contained' | 'outlined';
   color?: 'default' | 'primary' | 'secondary' | string;
   rippleColor?: string;
@@ -17,7 +17,7 @@ export type ButtonMuiProps = React.HTMLProps<HTMLButtonElement> & {
 
 type TypeStyledButtonMuiProps = {
   $type: 'text' | 'contained' | 'outlined';
-  color?: 'default' | 'primary' | 'secondary' | string;
+  $$color?: 'default' | 'primary' | 'secondary' | string;
   $color: IColor;
   $round?: boolean;
 };
@@ -44,8 +44,8 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
 
-  ${({ $type, $color, color }) => {
-    if (color === 'default') {
+  ${({ $type, $color, $$color }) => {
+    if ($$color === 'default') {
       switch ($type) {
         case 'contained':
           return css`
@@ -138,6 +138,7 @@ const StyledButtonMui = styled.button<TypeStyledButtonMuiProps>`
 `;
 
 export const ButtonMui: React.FC<ButtonMuiProps> = ({
+  htmlType = 'button',
   type = 'contained',
   color = 'default',
   round,
@@ -180,9 +181,10 @@ export const ButtonMui: React.FC<ButtonMuiProps> = ({
 
   return (
     <StyledButtonMui
+      type={htmlType}
       $type={type}
       $color={$color}
-      color={color}
+      $$color={color}
       $round={round}
       {...restProps}
     >
