@@ -16,22 +16,17 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": [
-    "**/*test.js",
-    "setupProxy.js",
-    "*.config.js"
-  ],
-  "plugins": [
-    "prettier",
-    "react"
-  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react", "prettier"],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "@dsaco"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended"
   ],
   "rules": {
     "prettier/prettier": 2,
-    "react/react-in-jsx-scope": 0
+    "react/react-in-jsx-scope": 0,
+    "react/prop-types": 0,
+    "@typescript-eslint/no-non-null-assertion": 0
   }
 }

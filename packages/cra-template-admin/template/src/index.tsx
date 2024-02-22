@@ -1,21 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
-
 import { router } from '@/routes';
-import '@/styles/index.css';
 
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <ConfigProvider locale={zhCN}>
+import '@/styles/index.css';
+
+createRoot(document.querySelector('#root')!).render(
+  // <React.StrictMode>
+  <ConfigProvider locale={zhCN}>
+    <React.Suspense fallback={<span>...</span>}>
       <RouterProvider router={router} />
-    </ConfigProvider>
-  </React.StrictMode>
+    </React.Suspense>
+  </ConfigProvider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

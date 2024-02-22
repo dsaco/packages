@@ -6,8 +6,8 @@
       "customSyntax": "postcss-less"
     },
     {
-      "files": ["**/*.scss"],
-      "customSyntax": "postcss-scss"
+      "files": ["**/*.{ts,tsx}"],
+      "customSyntax": "postcss-styled-syntax"
     }
   ],
   "rules": {
@@ -15,6 +15,12 @@
       true,
       {
         "ignoreAtRules": ["tailwind"]
+      }
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["theme"]
       }
     ]
   }
