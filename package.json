@@ -14,6 +14,8 @@
     "start:cra-admin": "pnpm -C packages/cra-template-admin/template start",
     "publish:cra-admin": "npm publish ./packages/cra-template-admin",
 
+    "start:vite-admin": "pnpm -C packages/vite-template-react-admin dev",
+
     "publish:eslint-config": "npm publish ./packages/eslint-config",
 
     "start:utils": "pnpm -C packages/utils start",
