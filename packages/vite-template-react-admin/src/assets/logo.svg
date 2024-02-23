@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="25">
+  <defs>
+    <linearGradient id="dsor-logo">
+      <stop offset="0%" stop-color="#bca1f7" />
+      <stop offset="43%" stop-color="#e577b4" />
+      <stop offset="85%" stop-color="#ff7170" />
+    </linearGradient>
+  </defs>
+  <text x="5%" y="75%" fill="url(#dsor-logo)" fontSize="16px">
+    Ds-or
+  </text>
+  <rect x="0" y="23" height="2" width="50" fill="#0ff"></rect>
+</svg>
