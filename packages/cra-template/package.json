@@ -7,9 +7,5 @@
   "license": "ISC",
   "repository": "https://github.com/dsaco/packages/tree/master/packages/cra-template",
   "author": "dsaco",
-  "main": "template.json",
-  "files": [
-    "template",
-    "template.json"
-  ]
+  "main": "template.json"
 }

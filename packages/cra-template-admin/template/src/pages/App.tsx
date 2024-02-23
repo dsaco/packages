@@ -1,12 +1,11 @@
-import { useEffect, useState, createElement } from 'react';
-import { Outlet, useNavigate, useLocation, matchPath } from 'react-router-dom';
-import { ConfigProvider, Layout, Menu } from 'antd';
+import { useState, createElement } from 'react';
+import { Outlet } from 'react-router-dom';
+import { ConfigProvider, Layout } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 
 import Header from '@/components/Layouts/Header';
-
-import { routesAndMenus, RouteAndMenu } from '@/routes';
+import SiderMenu from '@/components/Layouts/SiderMenu';
 
 const StyledBackground = styled.div`
   position: fixed;
@@ -36,44 +35,7 @@ const StyledToggleCollapse = styled.div<{ collapsed: boolean }>`
 `;
 
 export default function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [collapsed, setCollapsed] = useState(false);
-
-  const [menus, setMenus] = useState<RouteAndMenu[]>([]);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
-
-  useEffect(() => {
-    const recur = (items: RouteAndMenu[], prev: string[] = []) => {
-      const temp = [];
-      for (const item of items) {
-        if (!item.hideInMenu) {
-          if (Array.isArray(item.children)) {
-            item.children = recur(item.children, [...prev, item.key]);
-          }
-
-          temp.push(item);
-        }
-        if (item.path) {
-          const m = matchPath(item.path, location.pathname);
-          if (m?.pattern) {
-            setSelectedKeys([item.key]);
-            setOpenKeys(prev);
-          }
-        }
-      }
-
-      if (temp.length) {
-        return temp;
-      }
-    };
-
-    const menus = recur(routesAndMenus);
-
-    setMenus(menus!);
-  }, []);
 
   return (
     <>
@@ -119,17 +81,7 @@ export default function App() {
             collapsible
             collapsed={collapsed}
           >
-            <Menu
-              selectedKeys={selectedKeys}
-              openKeys={openKeys}
-              mode="inline"
-              items={menus}
-              onOpenChange={setOpenKeys}
-              onClick={({ key }) => {
-                setSelectedKeys([key]);
-                navigate(key);
-              }}
-            />
+            <SiderMenu />
             <StyledToggleCollapse
               collapsed={collapsed}
               onClick={() => setCollapsed((prev) => !prev)}

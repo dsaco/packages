@@ -5,9 +5,13 @@ import {
   DatabaseOutlined,
   UserOutlined,
   ShoppingOutlined,
+  WarningOutlined,
 } from '@ant-design/icons';
 
 import App from '@/pages/App';
+import NotFound from '@/pages/ErrorPage/404';
+import Forbidden from '@/pages/ErrorPage/403';
+import ServerError from '@/pages/ErrorPage/500';
 
 import Page2 from '@/pages/Page2';
 const Page1 = lazy(() => import('@/pages/Page1'));
@@ -79,16 +83,43 @@ export const routesAndMenus: RouteAndMenu[] = [
       },
     ],
   },
+  {
+    key: 'error',
+    icon: <WarningOutlined />,
+    label: '异常页',
+    children: [
+      {
+        key: '/403',
+        label: '403',
+        path: '/403',
+        element: <Forbidden />,
+      },
+      {
+        key: '/404',
+        label: '404',
+        path: '/404',
+        element: <NotFound />,
+      },
+      {
+        key: '/500',
+        label: '500',
+        path: '/500',
+        element: <ServerError />,
+      },
+    ],
+  },
 ];
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    children: routesAndMenus,
+    children: [
+      ...routesAndMenus,
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+    ],
   },
-  //   {
-  //     path: '*',
-  //     element: <NotFound />,
-  //   },
 ]);

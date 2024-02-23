@@ -15,7 +15,7 @@ createRoot(document.querySelector('#root')!).render(
     <React.Suspense fallback={<span>...</span>}>
       <RouterProvider router={router} />
     </React.Suspense>
-  </ConfigProvider>
+  </ConfigProvider>,
   // </React.StrictMode>
 );
 
