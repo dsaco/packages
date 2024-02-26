@@ -20,6 +20,5 @@
         "singleQuote": false
       }
     }
-  ],
-  "plugins": ["prettier-plugin-package"]
+  ]
 }
