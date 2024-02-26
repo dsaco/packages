@@ -1,10 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import {
   DashboardOutlined,
   DatabaseOutlined,
   UserOutlined,
-  ShoppingOutlined,
   WarningOutlined,
 } from '@ant-design/icons';
 

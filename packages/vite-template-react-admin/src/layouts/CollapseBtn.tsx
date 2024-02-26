@@ -2,10 +2,12 @@ import React, { createElement } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 
+import { SIDER_WIDTH, HEADER_HEIGHT } from '@/constant';
+
 const StyledCollapseBtn = styled.div<{ collapsed: boolean }>`
   position: fixed;
-  top: 72px;
-  left: ${({ collapsed }) => (collapsed ? 68 : 244)}px;
+  top: ${HEADER_HEIGHT + 16}px;
+  left: ${({ collapsed }) => (collapsed ? 68 : SIDER_WIDTH - 12)}px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

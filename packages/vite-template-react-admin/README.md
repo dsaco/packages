@@ -1,3 +1,6 @@
+degit dsaco/packages/packages/vite-template-react-admin#vite-react-ts my-new-project
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
