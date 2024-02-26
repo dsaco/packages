@@ -13,7 +13,7 @@ const debounced = debounce(
     return value;
   },
   32,
-  { leading: true }
+  { leading: true },
 );
 
 debounced.call({ name: '章三' }, 333);
@@ -45,12 +45,9 @@ type ErrorData = {
   statusCode: number;
 };
 
-const Request = new _Request({
-  onResRejected(e) {
-    console.log((e.response?.data as ErrorData)?.message);
-    return Promise.reject(e.response?.statusText);
-  },
-});
+const Request = new _Request();
+
+Request.useResponse(undefined, (e) => Promise.reject(e.response.statusText));
 
 interface ResponseRecords<T> {
   code: number;
