@@ -21,7 +21,7 @@ const UserList = lazy(() => import('@/pages/Users'));
 const UserDetail = lazy(() => import('@/pages/Users/UserDetail'));
 // const GoodList = lazy(() => import('@/pages/Goods'));
 
-export type RouteAndMenu = {
+export interface RouteAndMenu {
   key: string;
   icon?: JSX.Element;
   label?: string;
@@ -29,7 +29,7 @@ export type RouteAndMenu = {
   element?: React.ReactNode;
   hideInMenu?: boolean;
   children?: RouteAndMenu[];
-};
+}
 
 export const routesAndMenus: RouteAndMenu[] = [
   {

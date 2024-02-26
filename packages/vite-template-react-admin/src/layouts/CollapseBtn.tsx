@@ -16,17 +16,19 @@ const StyledCollapseBtn = styled.div<{ collapsed: boolean }>`
   cursor: pointer;
   background-color: #fff;
   border-radius: 50%;
-  box-shadow: 0 2px 8px -2px rgb(0 0 0 / 20%), 0 1px 4px -1px rgb(25 15 15 / 7%),
+  box-shadow:
+    0 2px 8px -2px rgb(0 0 0 / 20%),
+    0 1px 4px -1px rgb(25 15 15 / 7%),
     0 0 1px 0 rgb(0 0 0 / 10%);
   transition: all 0.2s;
 `;
 
-type CollapseBtnProps = {
+interface ICollapseBtnProps {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
-const CollapseBtn: React.FC<CollapseBtnProps> = ({
+const CollapseBtn: React.FC<ICollapseBtnProps> = ({
   collapsed,
   setCollapsed,
 }) => {
