@@ -1,0 +1,13 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss",
+    "typescript",
+    "typescriptreact"
+  ]
+}

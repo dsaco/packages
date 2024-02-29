@@ -4,4 +4,5 @@ packages:
   - 'packages/cra-template-admin/template'
   - 'packages/utils'
   - 'packages/react-components'
+  - 'packages/vite-template-react'
   - 'packages/vite-template-react-admin'
