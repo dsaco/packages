@@ -65,10 +65,10 @@ export default function UserList() {
       title: '修改日期',
     },
     {
-      dataIndex: 'updateTime',
+      dataIndex: 'id',
       title: '操作',
       fixed: 'right',
-      render: (text, record) => {
+      render: (id: number, record) => {
         return (
           <Space>
             <Button
@@ -83,7 +83,7 @@ export default function UserList() {
             <Popconfirm
               title="删除此用户"
               description="确认删除此条数据吗? 删除后不可恢复"
-              onConfirm={() => onDel(record.id)}
+              onConfirm={() => onDel(id)}
             >
               <Button type="link" size="small" danger>
                 删除

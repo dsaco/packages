@@ -14,6 +14,7 @@ import Layout from '@/layouts/Layout';
 
 import Login from '@/pages/Login';
 
+import UnexpectedError from '@/pages/ErrorPage/UnexpectedError';
 import NotFound from '@/pages/ErrorPage/404';
 import Forbidden from '@/pages/ErrorPage/403';
 import ServerError from '@/pages/ErrorPage/500';
@@ -97,6 +98,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <UnexpectedError />,
     children: [
       ...routesAndMenus,
       {
