@@ -131,7 +131,7 @@ importers:
         version: 2.1.4
       zustand:
         specifier: ^4.3.8
-        version: 4.5.1(react@18.2.0)
+        version: 4.5.1(@types/react@18.2.57)(react@18.2.0)
     devDependencies:
       '@craco/craco':
         specifier: ^7.1.0
@@ -240,7 +240,7 @@ importers:
         version: 2.1.4
       zustand:
         specifier: ^4.3.8
-        version: 4.5.1(react@18.2.0)
+        version: 4.5.1(@types/react@18.2.57)(react@18.2.0)
     devDependencies:
       '@craco/craco':
         specifier: ^7.1.0
@@ -470,7 +470,7 @@ importers:
         version: 2.1.4
       zustand:
         specifier: ^4.3.8
-        version: 4.5.1(react@18.2.0)
+        version: 4.5.1(@types/react@18.2.57)(react@18.2.0)
 
   packages/utils:
     dependencies:
@@ -532,12 +532,18 @@ importers:
       '@ant-design/icons':
         specifier: ^5.3.0
         version: 5.3.0(react-dom@18.2.0)(react@18.2.0)
+      '@dsaco/utils':
+        specifier: ^0.1.17
+        version: link:../utils
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.57)(react@18.2.0)
       antd:
         specifier: ^5.14.1
         version: 5.14.1(react-dom@18.2.0)(react@18.2.0)
+      axios:
+        specifier: ^1.4.0
+        version: 1.6.7
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -547,6 +553,9 @@ importers:
       react-router-dom:
         specifier: ^6.22.1
         version: 6.22.1(react-dom@18.2.0)(react@18.2.0)
+      zustand:
+        specifier: ^4.3.8
+        version: 4.5.1(@types/react@18.2.57)(react@18.2.0)
     devDependencies:
       '@types/react':
         specifier: ^18.2.56
@@ -587,6 +596,9 @@ importers:
       postcss-less:
         specifier: ^6.0.0
         version: 6.0.0(postcss@8.4.35)
+      postcss-styled-syntax:
+        specifier: ^0.6.4
+        version: 0.6.4(postcss@8.4.35)
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -11826,7 +11838,7 @@ packages:
     peerDependencies:
       stylelint: '>=15'
     dependencies:
-      stylelint: 16.2.1(typescript@4.9.5)
+      stylelint: 16.2.1(typescript@5.3.3)
       stylelint-order: 6.0.4(stylelint@16.2.1)
     dev: true
 
@@ -11853,7 +11865,7 @@ packages:
     peerDependencies:
       stylelint: ^16.0.0
     dependencies:
-      stylelint: 16.2.1(typescript@4.9.5)
+      stylelint: 16.2.1(typescript@5.3.3)
     dev: true
 
   /stylelint-config-standard@33.0.0(stylelint@15.11.0):
@@ -11881,7 +11893,7 @@ packages:
     peerDependencies:
       stylelint: ^16.1.0
     dependencies:
-      stylelint: 16.2.1(typescript@4.9.5)
+      stylelint: 16.2.1(typescript@5.3.3)
       stylelint-config-recommended: 14.0.0(stylelint@16.2.1)
     dev: true
 
@@ -11902,7 +11914,7 @@ packages:
     dependencies:
       postcss: 8.4.35
       postcss-sorting: 8.0.2(postcss@8.4.35)
-      stylelint: 16.2.1(typescript@4.9.5)
+      stylelint: 16.2.1(typescript@5.3.3)
     dev: true
 
   /stylelint@15.11.0(typescript@4.9.5):
@@ -13325,7 +13337,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==, tarball: https://r2.cnpmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz}
     engines: {node: '>=10'}
 
-  /zustand@4.5.1(react@18.2.0):
+  /zustand@4.5.1(@types/react@18.2.57)(react@18.2.0):
     resolution: {integrity: sha512-XlauQmH64xXSC1qGYNv00ODaQ3B+tNPoy22jv2diYiP4eoDKr9LA+Bh5Bc3gplTrFdb6JVI+N4kc1DZ/tbtfPg==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -13340,5 +13352,6 @@ packages:
       react:
         optional: true
     dependencies:
+      '@types/react': 18.2.57
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)

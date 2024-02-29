@@ -28,5 +28,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'react/prop-types': 0,
+    '@typescript-eslint/no-floating-promises': 0,
   },
 };

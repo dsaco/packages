@@ -1,25 +1,27 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
+import { message } from 'antd';
 import {
   DashboardOutlined,
   DatabaseOutlined,
   UserOutlined,
   WarningOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 
 import Layout from '@/layouts/Layout';
 
+import Login from '@/pages/Login';
+
 import NotFound from '@/pages/ErrorPage/404';
 import Forbidden from '@/pages/ErrorPage/403';
 import ServerError from '@/pages/ErrorPage/500';
-
-// import Page2 from '@/pages/Page2';
-// const Page1 = lazy(() => import('@/pages/Page1'));
+import { useAuthStore } from '@/stores/authStore';
 
 const UserList = lazy(() => import('@/pages/Users'));
 const UserDetail = lazy(() => import('@/pages/Users/UserDetail'));
-// const GoodList = lazy(() => import('@/pages/Goods'));
+const NoteList = lazy(() => import('@/pages/Notes'));
 
 export interface RouteAndMenu {
   key: string;
@@ -36,26 +38,6 @@ export const routesAndMenus: RouteAndMenu[] = [
     key: 'dashboard',
     icon: <DashboardOutlined />,
     label: '仪表盘',
-    // children: [
-    //   {
-    //     key: '/page1',
-    //     label: '分析页',
-    //     path: '/page1',
-    //     element: <Page1 />,
-    //   },
-    //   {
-    //     key: '/page2',
-    //     label: '监控页',
-    //     path: '/page2',
-    //     element: <Page2 />,
-    //   },
-    //   {
-    //     key: '/page3',
-    //     label: '工作台',
-    //     path: '/page3',
-    //     element: <Page1 />,
-    //   },
-    // ],
   },
   {
     key: 'data',
@@ -75,13 +57,13 @@ export const routesAndMenus: RouteAndMenu[] = [
         element: <UserDetail />,
         hideInMenu: true,
       },
-      //   {
-      //     key: '/goods',
-      //     label: '商品管理',
-      //     icon: <ShoppingOutlined />,
-      //     path: '/goods',
-      //     element: <GoodList />,
-      //   },
+      {
+        key: '/notes',
+        label: '文章管理',
+        icon: <ReadOutlined />,
+        path: '/notes',
+        element: <NoteList />,
+      },
     ],
   },
   {
@@ -122,5 +104,25 @@ export const router = createBrowserRouter([
         element: <NotFound />,
       },
     ],
+    loader: async () => {
+      let { userinfo } = useAuthStore.getState();
+      const { getUserinfo } = useAuthStore.getState();
+
+      if (!userinfo) {
+        userinfo = await getUserinfo();
+      }
+      if (!userinfo) {
+        return redirect('/login');
+      }
+      if (Number(userinfo.role) < 3) {
+        message.warning('权限不足，请尝试其他账号');
+        return redirect('/login');
+      }
+      return null;
+    },
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
