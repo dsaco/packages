@@ -5,18 +5,32 @@ import type {
   AxiosResponse,
   AxiosRequestConfig,
   InternalAxiosRequestConfig,
-  AxiosInterceptorOptions,
+  AxiosError,
 } from 'axios';
 
 type TypeOnFulfilled<V> = ((value: V) => V | Promise<V>) | null;
 
-export class Request {
+export type HttpConfig<T = unknown> = CreateAxiosDefaults & {
+  reqFulfilled?: TypeOnFulfilled<InternalAxiosRequestConfig>;
+  reqRejected?: ((error: AxiosError) => any) | null;
+  resFulfilled?: TypeOnFulfilled<AxiosResponse>;
+  resRejected?: ((error: AxiosError<T>) => any) | null;
+};
+
+export class Http<T> {
   private instance: AxiosInstance;
 
-  constructor(config?: CreateAxiosDefaults) {
+  constructor(config?: HttpConfig<T>) {
     this.instance = axios.create(config);
 
-    this.useResponse(({ data }) => data);
+    this.instance.interceptors.request.use(
+      config?.reqFulfilled,
+      config?.reqRejected,
+    );
+    this.instance.interceptors.response.use(
+      config?.resFulfilled ?? ((response: AxiosResponse) => response.data),
+      config?.resRejected,
+    );
   }
 
   get<T>(
@@ -69,24 +83,5 @@ export class Request {
 
   request<T>(config: AxiosRequestConfig): Promise<T> {
     return this.instance.request(config);
-  }
-
-  useRequest(
-    onFulfilled?: TypeOnFulfilled<InternalAxiosRequestConfig>,
-    onRejected?: ((error: any) => any) | null,
-    options?: AxiosInterceptorOptions,
-  ) {
-    this.instance.interceptors.request.use(onFulfilled, onRejected, options);
-  }
-  useResponse(
-    onFulfilled?: TypeOnFulfilled<AxiosResponse>,
-    onRejected?: ((error: any) => any) | null,
-    options?: AxiosInterceptorOptions,
-  ) {
-    this.instance.interceptors.response.use(
-      onFulfilled ?? ((response: AxiosResponse) => response.data),
-      onRejected,
-      options,
-    );
   }
 }
