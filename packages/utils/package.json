@@ -1,15 +1,39 @@
 {
-  "name": "utils",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@dsaco/utils",
+  "version": "0.1.26",
+  "repository": "https://github.com/dsaco/packages/tree/master/packages/utils",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build --mode lib",
+    "dev": "vite --mode project"
+  },
+  "dependencies": {
+    "axios": "^1.4.0"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vite-plugin-dts": "4.0.0-beta.1"
+  },
+  "peerDependencies": {
+    "axios": "^1.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
